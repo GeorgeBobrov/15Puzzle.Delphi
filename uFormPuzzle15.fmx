@@ -1,0 +1,646 @@
+object FormPuzzle15: TFormPuzzle15
+  Left = 500
+  Top = 0
+  Caption = 'Puzzle15'
+  ClientHeight = 626
+  ClientWidth = 392
+  Position = Default
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  OnCreate = FormCreate
+  OnClose = FormClose
+  Left = 500
+  DesignerMasterStyle = 0
+  object PanelClient: TPanel
+    Align = Client
+    Size.Width = 392.000000000000000000
+    Size.Height = 521.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 0
+    OnResize = PanelClientResize
+    object Tile1: TRectangle
+      Fill.Kind = Gradient
+      Fill.Gradient.Points = <
+        item
+          Color = xFFABE024
+          Offset = 0.086816720664501180
+        end
+        item
+          Color = claBisque
+          Offset = 0.655948579311370900
+        end>
+      Fill.Gradient.StartPosition.X = 0.850103795528411900
+      Fill.Gradient.StartPosition.Y = 1.000000000000000000
+      Fill.Gradient.StopPosition.X = 0.149896204471588100
+      Fill.Gradient.StopPosition.Y = 0.000000003202160315
+      Position.X = 9.000000000000000000
+      Position.Y = 100.000000000000000000
+      Size.Width = 32.000000000000000000
+      Size.Height = 33.000000000000000000
+      Size.PlatformDefault = False
+      Stroke.Color = xFFE55555
+      Stroke.Thickness = 2.000000000000000000
+      Stroke.Cap = Round
+      Stroke.Join = Round
+      OnMouseDown = Tile1MouseDown
+      object TileText: TText
+        Align = Client
+        HitTest = False
+        Padding.Left = 3.000000000000000000
+        Padding.Top = 5.000000000000000000
+        Padding.Right = 3.000000000000000000
+        Padding.Bottom = 3.000000000000000000
+        Size.Width = 32.000000000000000000
+        Size.Height = 33.000000000000000000
+        Size.PlatformDefault = False
+        Text = '1'
+        TextSettings.Font.Family = 'Default'
+        TextSettings.Font.Size = 15.000000000000000000
+      end
+      object TileGradientAni: TGradientAnimation
+        Duration = 0.400000005960464400
+        PropertyName = 'Fill.Gradient'
+        StartValue.Points = <
+          item
+            Color = claBlack
+            Offset = 0.000000000000000000
+          end
+          item
+            Color = claWhite
+            Offset = 1.000000000000000000
+          end>
+        StartFromCurrent = True
+        StopValue.Points = <
+          item
+            Color = claBlack
+            Offset = 0.000000000000000000
+          end
+          item
+            Color = claWhite
+            Offset = 1.000000000000000000
+          end>
+      end
+    end
+    object TimerClose: TTimer
+      Enabled = False
+      OnTimer = TimerCloseTimer
+      Left = 500
+      Top = 120
+    end
+  end
+  object PanelTop: TRectangle
+    Align = MostTop
+    Size.Width = 392.000000000000000000
+    Size.Height = 40.000000000000000000
+    Size.PlatformDefault = False
+    object LayoutCenter: TLayout
+      Align = Client
+      Size.Width = 273.000000000000000000
+      Size.Height = 40.000000000000000000
+      Size.PlatformDefault = False
+      object ButtonShuffle: TRectangle
+        Align = Center
+        Fill.Bitmap.WrapMode = TileOriginal
+        Fill.Kind = Bitmap
+        Padding.Left = 2.000000000000000000
+        Padding.Top = 2.000000000000000000
+        Padding.Right = 2.000000000000000000
+        Padding.Bottom = 2.000000000000000000
+        Size.Width = 47.000000000000000000
+        Size.Height = 30.000000000000000000
+        Size.PlatformDefault = False
+        Stroke.Color = xFFADADAD
+        OnClick = ButtonShuffleClick
+        object ImageShuffle: TImage
+          MultiResBitmap = <
+            item
+              Width = 24
+              Height = 24
+              PNG = {
+                89504E470D0A1A0A0000000D4948445200000018000000180806000000E0773D
+                F8000000017352474200AECE1CE90000000467414D410000B18F0BFC61050000
+                038849444154484BD5955D6F1B451486CFCCCE7E384E9CB553A422105A2EB8A6
+                480D81B6C8B62077089C5F109B22CC0590F00B20BF00192150242AA7175CDB08
+                F15128B22DD4A42912C9055CDB2516128834569BD89BFD98C3D9ED12B2D86E53
+                7AC5238D663DB3FBBE3367E61C337808B28B359371BE85523ED3BABCD08B8663
+                F0A8FF6F28BC805CB15051DE8B468678280364FC559C7E02989A58CE5EFC2217
+                0DC7B86F88823000E745C9609173ED0C7295BE62C0A44706F4987912403AE0ED
+                B63BC2F38642A544FD48B2A5DAB2CD458D19A70A987CF4B43432C08C6970D514
+                78BA09AE96069F5C7C26C85331015DE3D79F3EBB127D1E327607B962BDEA6BA9
+                A26F3C021E7238F4105C8F164B735CE1D4D83F3D0F1A07637F0750BAF96BABF3
+                CDBB2A630C48FC03125F96620298D707D7B77B1AC3ED604EA2B4A43265B9DA14
+                483D1537912EB03F6E76AE5D9AA7B8DD65C880629EA3DBD140AED1297A6B8CB1
+                4AEBD39743F1BFC996BFB63CA6B75DD3022E2203DF0138E801DEEE758410F9D6
+                6ABE13BC2BC22F8EC1145EF5119ADCB54B7460E14BFFC647F50CEA49109A02DC
+                B349F416F84EBFC9102FAF5F9A5F8B5E0B89192CBCF3D5ECEEBE57FFA1FACABB
+                D1D068186629C100F6BA7481EC3AADBFB2B1FAE251DC8F73DF6B3A8AF3E5AB5B
+                746DB6E9F05736A350FC3F982B37ACE8F1C49CA8549C2B5F2D3EFFE6F70DC1E4
+                D89A338E7B1ABC50BE523C7FF1BBB6366556F5642A879CB7A2A9913CBDB465CE
+                BE7DBD31B7B471B4D31179D030A5E62C3B5C2E19C953A6369D0191D061FFB71D
+                E068A75B95FCC8B2FCEC5BD70BCCC52AEAAC7EE3C3E74AD170FC9A5E78EDCB82
+                2DECAA9E9831139369503415B84A9B4404677018089BD48E0C82151BBE5D908C
+                2F1A493D77B837E831862BD174486C0741E5B475A3ADA72D53D17450485C5115
+                10D4BCC13E380707E0F407E04B6C52D1B11299B495309390796C06BABFEC40FF
+                F660E146E56C3D920B190AD18537BE293075A226661E0F0D02712E1460541218
+                F59C7EABBA00CD1061EF3B0E747FBE1988977EAC9C8D6571C0C8443BF7FAB735
+                2D73BAC0265220838CA582A66A81208993B046C2E8BB70E7F75BB0DBDDA3DA03
+                A5CDCAECC933393868DBB0DB683E650A41F5FECF2EC59D84530913E93CBC41BF
+                835C6C03F2CF373F9A1B5AF571461A0404771FF4C92A1A9300777657363EC9BE
+                1F4D3D1063F3607DF5A535740E9A8C4A30633276700FC23D134D222F31CFDE5E
+                FF381FFB3F3839007F01934351BC60C3C30D0000000049454E44AE426082}
+            end>
+          Align = Client
+          HitTest = False
+          Padding.Left = 3.000000000000000000
+          Padding.Right = 3.000000000000000000
+          Size.Width = 43.000000000000000000
+          Size.Height = 26.000000000000000000
+          Size.PlatformDefault = False
+        end
+        object ShuffleColorAnimation: TColorAnimation
+          Enabled = True
+          Duration = 0.200000002980232200
+          PropertyName = 'Stroke.Color'
+          StartValue = xFFADADAD
+          StopValue = xFFAC44B9
+          Trigger = 'IsMouseOver=true'
+          TriggerInverse = 'IsMouseOver=false'
+        end
+        object ShuffleGloomEffect: TGloomEffect
+          Trigger = 'IsMouseOver=false'
+          GloomIntensity = 0.500000000000000000
+          BaseIntensity = 0.500000000000000000
+          GloomSaturation = 0.050000000745058060
+          BaseSaturation = 0.500000000000000000
+          object ShuffleGloomEffectAni: TFloatAnimation
+            AutoReverse = True
+            Duration = 0.800000011920928900
+            Loop = True
+            PropertyName = 'BaseIntensity'
+            StartValue = 1.000000000000000000
+            StopValue = 0.500000000000000000
+          end
+        end
+      end
+    end
+    object ButtonMenu: TRectangle
+      Align = MostRight
+      Fill.Bitmap.WrapMode = TileOriginal
+      Fill.Kind = Bitmap
+      Margins.Left = 2.000000000000000000
+      Margins.Top = 2.000000000000000000
+      Margins.Right = 2.000000000000000000
+      Margins.Bottom = 2.000000000000000000
+      Position.X = 336.000000000000000000
+      Position.Y = 2.000000000000000000
+      Size.Width = 54.000000000000000000
+      Size.Height = 36.000000000000000000
+      Size.PlatformDefault = False
+      Stroke.Color = xFFADADAD
+      OnClick = ButtonMenuClick
+      object ImageMenu: TImage
+        MultiResBitmap = <
+          item
+            Width = 24
+            Height = 24
+            PNG = {
+              89504E470D0A1A0A0000000D4948445200000018000000180806000000E0773D
+              F8000000017352474200AECE1CE90000000467414D410000B18F0BFC61050000
+              011B49444154484B63185EC0BBF09134944935C008A5C1C02FFF99DD7F2686D8
+              3F8CDF03FF7EFCCCC5C0C00295C10DB87819399918FF323032B37EF8FD8F6FE3
+              BF3FFF366F9924BB162A8D6A4160D9CB99AF185F27CBB108323331FC07CA3241
+              65F0837FFFFF30FCFFCFC8C0CEC5F68B898177DFFC1A2E4FA81403AA09FFFEB3
+              4B308A3DE0E3136010101265E01710228805048519F8F98519787905800EE2FF
+              C4C0C4086420008A05FF7EFF99C0CCF0AF9E9393F935CFA7577F393EBF2588D9
+              D9591978B9D919D878983E7FFBF461F6DB376FB3A0C681014A1079E4DE626711
+              E266569392E2626701FAF90B54021F60FC25CCC0CEC0F09381FDCDB52BB73FF3
+              BE50FDB37A35305206048C26D3E1994C8719184DA6A3C9744402060600EC460C
+              40E0185EE20000000049454E44AE426082}
+          end>
+        Align = Client
+        HitTest = False
+        Padding.Left = 3.000000000000000000
+        Padding.Right = 3.000000000000000000
+        Size.Width = 54.000000000000000000
+        Size.Height = 36.000000000000000000
+        Size.PlatformDefault = False
+        WrapMode = Center
+      end
+      object ColorAnimation2: TColorAnimation
+        Enabled = True
+        Duration = 0.200000002980232200
+        PropertyName = 'Stroke.Color'
+        StartValue = xFFADADAD
+        StopValue = xFFAC44B9
+        Trigger = 'IsMouseOver=true'
+        TriggerInverse = 'IsMouseOver=false'
+      end
+      object GloomEffect4: TGloomEffect
+        Trigger = 'IsMouseOver=false'
+        GloomIntensity = 0.500000000000000000
+        BaseIntensity = 0.500000000000000000
+        GloomSaturation = 0.050000000745058060
+        BaseSaturation = 0.500000000000000000
+        object FloatAnimation4: TFloatAnimation
+          AutoReverse = True
+          Duration = 0.800000011920928900
+          Loop = True
+          PropertyName = 'BaseIntensity'
+          StartValue = 1.000000000000000000
+          StopValue = 0.500000000000000000
+        end
+      end
+    end
+    object PanelTime: TRectangle
+      Align = Left
+      Margins.Left = 2.000000000000000000
+      Margins.Top = 2.000000000000000000
+      Margins.Right = 2.000000000000000000
+      Margins.Bottom = 2.000000000000000000
+      Position.X = 2.000000000000000000
+      Position.Y = 2.000000000000000000
+      Size.Width = 57.000000000000000000
+      Size.Height = 36.000000000000000000
+      Size.PlatformDefault = False
+      Stroke.Color = xFFADADAD
+      object TextTime: TText
+        Align = Center
+        Padding.Left = 2.000000000000000000
+        Padding.Top = 2.000000000000000000
+        Padding.Right = 2.000000000000000000
+        Size.Width = 41.000000000000000000
+        Size.Height = 22.000000000000000000
+        Size.PlatformDefault = False
+        Text = '1:30'
+        TextSettings.Font.Family = 'Tahoma'
+        TextSettings.Font.Size = 16.000000000000000000
+        TextSettings.WordWrap = False
+      end
+    end
+  end
+  object TimerReShuffle: TTimer
+    Enabled = False
+    OnTimer = TimerReShuffleTimer
+    Left = 504
+    Top = 48
+  end
+  object TimerResize: TTimer
+    Enabled = False
+    Interval = 100
+    OnTimer = TimerResizeTimer
+    Left = 432
+    Top = 120
+  end
+  object TimerTime: TTimer
+    Enabled = False
+    OnTimer = TimerTimeTimer
+    Left = 568
+    Top = 48
+  end
+  object TimerCreateTiles: TTimer
+    Enabled = False
+    OnTimer = TimerCreateTilesTimer
+    Left = 428
+    Top = 48
+  end
+  object PanelDebug: TPanel
+    Align = Top
+    Position.Y = 40.000000000000000000
+    Size.Width = 392.000000000000000000
+    Size.Height = 65.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 5
+    object ButtonDisappeare: TButton
+      Position.X = 8.000000000000000000
+      Position.Y = 5.000000000000000000
+      Size.Width = 105.000000000000000000
+      Size.Height = 25.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 0
+      Text = 'Disappeare'
+      OnClick = ButtonDisappeareClick
+    end
+    object ButtonPlace: TButton
+      Position.X = 120.000000000000000000
+      Position.Y = 5.000000000000000000
+      Size.Width = 105.000000000000000000
+      Size.Height = 25.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 1
+      Text = 'Place'
+      OnClick = ButtonPlaceClick
+    end
+    object ButtonTimeRunningOut: TButton
+      Position.X = 232.000000000000000000
+      Position.Y = 5.000000000000000000
+      Size.Width = 105.000000000000000000
+      Size.Height = 25.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 2
+      Text = 'Time Running Out'
+      OnClick = ButtonTimeRunningOutClick
+    end
+    object ButtonBaseNotChanged: TButton
+      Position.X = 7.000000000000000000
+      Position.Y = 34.000000000000000000
+      Size.Width = 105.000000000000000000
+      Size.Height = 25.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 3
+      Text = 'Base Not Changed'
+      OnClick = ButtonBaseNotChangedClick
+    end
+    object ButtonPuzzleMatched: TButton
+      Position.X = 120.000000000000000000
+      Position.Y = 34.000000000000000000
+      Size.Width = 105.000000000000000000
+      Size.Height = 25.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 5
+      Text = 'Puzzle Matched'
+      OnClick = ButtonPuzzleMatchedClick
+    end
+    object ButtonTimeOver: TButton
+      Position.X = 232.000000000000000000
+      Position.Y = 34.000000000000000000
+      Size.Width = 105.000000000000000000
+      Size.Height = 25.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 4
+      Text = 'Time is Over'
+      OnClick = ButtonTimeOverClick
+    end
+  end
+  object PanelMenuCl: TRectangle
+    Align = Top
+    ClipChildren = True
+    Fill.Color = xFFDBFEDF
+    Size.Width = 385.000000000000000000
+    Size.Height = 40.000000000000000000
+    Size.PlatformDefault = False
+    Stroke.Color = claSeagreen
+    Visible = False
+    XRadius = 3.000000000000000000
+    YRadius = 3.000000000000000000
+    object MenuFloatAnimation: TFloatAnimation
+      AnimationType = Out
+      Duration = 0.400000005960464400
+      Interpolation = Back
+      Inverse = True
+      PropertyName = 'Height'
+      StartValue = 0.000000000000000000
+      StopValue = 40.000000000000000000
+    end
+    object GridPanelLayout1: TGridPanelLayout
+      Align = Client
+      Size.Width = 385.000000000000000000
+      Size.Height = 40.000000000000000000
+      Size.PlatformDefault = False
+      ColumnCollection = <
+        item
+          Value = 25.000000000000000000
+        end
+        item
+          Value = 25.000000000000000000
+        end
+        item
+          Value = 25.000000000000000000
+        end
+        item
+          Value = 25.000000000000000000
+        end>
+      ControlCollection = <
+        item
+          Column = 0
+          Control = Button3x3
+          Row = 0
+        end
+        item
+          Column = 1
+          Control = Button4x4
+          Row = 0
+        end
+        item
+          Column = 2
+          Control = Button5x5
+          Row = 0
+        end
+        item
+          Column = 3
+          Control = ButtonClose
+          Row = 0
+        end>
+      RowCollection = <
+        item
+          Value = 100.000000000000000000
+        end>
+      object Button3x3: TRectangle
+        Tag = 3
+        Align = Center
+        Fill.Color = claCornsilk
+        Margins.Left = 2.000000000000000000
+        Margins.Top = 2.000000000000000000
+        Margins.Right = 2.000000000000000000
+        Margins.Bottom = 2.000000000000000000
+        Size.Width = 46.000000000000000000
+        Size.Height = 28.000000000000000000
+        Size.PlatformDefault = False
+        Stroke.Color = xFF57AC01
+        OnClick = ButtonChangeBaseClick
+        object Text33: TText
+          Align = Center
+          HitTest = False
+          Padding.Left = 3.000000000000000000
+          Padding.Right = 3.000000000000000000
+          Size.Width = 41.000000000000000000
+          Size.Height = 24.000000000000000000
+          Size.PlatformDefault = False
+          Text = '3 x 3'
+          TextSettings.Font.Size = 15.000000000000000000
+          TextSettings.WordWrap = False
+        end
+        object ColorAnimation33: TColorAnimation
+          Duration = 0.200000002980232200
+          PropertyName = 'Fill.Color'
+          StartValue = claCornsilk
+          StopValue = xEDFEEBA2
+          Trigger = 'IsMouseOver=true'
+          TriggerInverse = 'IsMouseOver=false'
+        end
+        object ColorAnimation4: TColorAnimation
+          Enabled = True
+          Duration = 0.200000002980232200
+          Inverse = True
+          PropertyName = 'Stroke.Color'
+          StartValue = xFF57AC01
+          StopValue = xFF64005A
+          Trigger = 'IsMouseOver=true'
+          TriggerInverse = 'IsMouseOver=false'
+        end
+      end
+      object Button4x4: TRectangle
+        Tag = 4
+        Align = Center
+        Fill.Color = claCornsilk
+        Margins.Left = 2.000000000000000000
+        Margins.Top = 2.000000000000000000
+        Margins.Right = 2.000000000000000000
+        Margins.Bottom = 2.000000000000000000
+        Size.Width = 47.000000000000000000
+        Size.Height = 28.000000000000000000
+        Size.PlatformDefault = False
+        Stroke.Color = xFF57AC01
+        OnClick = ButtonChangeBaseClick
+        object Text44: TText
+          Align = Center
+          HitTest = False
+          Padding.Left = 3.000000000000000000
+          Padding.Top = 3.000000000000000000
+          Padding.Right = 3.000000000000000000
+          Padding.Bottom = 3.000000000000000000
+          Size.Width = 41.000000000000000000
+          Size.Height = 24.000000000000000000
+          Size.PlatformDefault = False
+          Text = '4 x 4'
+          TextSettings.Font.Size = 15.000000000000000000
+          TextSettings.WordWrap = False
+        end
+        object ColorAnimation5: TColorAnimation
+          Enabled = True
+          Duration = 0.200000002980232200
+          Inverse = True
+          PropertyName = 'Stroke.Color'
+          StartValue = xFF57AC01
+          StopValue = xFF64005A
+          Trigger = 'IsMouseOver=true'
+          TriggerInverse = 'IsMouseOver=false'
+        end
+        object ColorAnimation6: TColorAnimation
+          Duration = 0.200000002980232200
+          PropertyName = 'Fill.Color'
+          StartValue = claCornsilk
+          StopValue = xEDFEEBA2
+          Trigger = 'IsMouseOver=true'
+          TriggerInverse = 'IsMouseOver=false'
+        end
+      end
+      object Button5x5: TRectangle
+        Tag = 5
+        Align = Center
+        Fill.Color = claCornsilk
+        Margins.Left = 2.000000000000000000
+        Margins.Top = 2.000000000000000000
+        Margins.Right = 2.000000000000000000
+        Margins.Bottom = 2.000000000000000000
+        Size.Width = 47.000000000000000000
+        Size.Height = 28.000000000000000000
+        Size.PlatformDefault = False
+        Stroke.Color = xFF57AC01
+        OnClick = ButtonChangeBaseClick
+        object Text55: TText
+          Align = Center
+          HitTest = False
+          Padding.Left = 3.000000000000000000
+          Padding.Right = 3.000000000000000000
+          Size.Width = 41.000000000000000000
+          Size.Height = 24.000000000000000000
+          Size.PlatformDefault = False
+          Text = '5 x 5'
+          TextSettings.Font.Size = 15.000000000000000000
+          TextSettings.WordWrap = False
+        end
+        object ColorAnimation55: TColorAnimation
+          Duration = 0.200000002980232200
+          PropertyName = 'Fill.Color'
+          StartValue = claCornsilk
+          StopValue = xEDFEEBA2
+          Trigger = 'IsMouseOver=true'
+          TriggerInverse = 'IsMouseOver=false'
+        end
+        object ColorAnimation3: TColorAnimation
+          Enabled = True
+          Duration = 0.200000002980232200
+          Inverse = True
+          PropertyName = 'Stroke.Color'
+          StartValue = xFF57AC01
+          StopValue = xFF64005A
+          Trigger = 'IsMouseOver=true'
+          TriggerInverse = 'IsMouseOver=false'
+        end
+      end
+      object ButtonClose: TRectangle
+        Align = Center
+        Fill.Bitmap.WrapMode = TileOriginal
+        Fill.Kind = Bitmap
+        Margins.Left = 2.000000000000000000
+        Margins.Top = 2.000000000000000000
+        Margins.Right = 2.000000000000000000
+        Margins.Bottom = 2.000000000000000000
+        Size.Width = 47.000000000000000000
+        Size.Height = 28.000000000000000000
+        Size.PlatformDefault = False
+        Stroke.Color = xFFADADAD
+        OnClick = ButtonCloseClick
+        object ButtonCloseColorAni: TColorAnimation
+          Enabled = True
+          Duration = 0.200000002980232200
+          PropertyName = 'Stroke.Color'
+          StartValue = xFFADADAD
+          StopValue = xFFC53B3B
+          Trigger = 'IsMouseOver=true'
+          TriggerInverse = 'IsMouseOver=false'
+        end
+        object CloseGloomEffect: TGloomEffect
+          Trigger = 'IsMouseOver=false'
+          GloomIntensity = 0.500000000000000000
+          BaseIntensity = 0.500000000000000000
+          GloomSaturation = 0.050000000745058060
+          BaseSaturation = 0.500000000000000000
+          object CloseGloomEffectAni: TFloatAnimation
+            AutoReverse = True
+            Duration = 0.800000011920928900
+            Loop = True
+            PropertyName = 'BaseIntensity'
+            StartValue = 1.000000000000000000
+            StopValue = 0.500000000000000000
+          end
+        end
+        object ImageClose: TImage
+          MultiResBitmap = <
+            item
+              Width = 24
+              Height = 24
+              PNG = {
+                89504E470D0A1A0A0000000D4948445200000018000000180806000000E0773D
+                F8000000017352474200AECE1CE90000000467414D410000B18F0BFC61050000
+                020249444154484BED94ED4BDB6014C58F2BB8CAD4DAD15A875629CAC68A1B38
+                50864E64B8B10F53D0C140F42FDC27FF02BFC914758C52117CC1811B65D2A9ED
+                9C7D8BC9E33D3591C6A449DC670F3C3C49B8FCCECDC973837BFD977E4F43E5A6
+                A0CC5B5F65FAA132BDEEF50FCCFD4684772ECE21B2348BA3D7FE268427DF0EA0
+                6F2A896F0967BDCDC082875F7E42DBF02CA20BEF71F8AAB98905EFEA4B22DA93
+                C0C0681C5B517BBDCDC0B80494AE035A05A895F128FD0EB1CF93D81B769A34C2
+                51967A594AD361186681A91673BF116361E784D304B50AFE7E5F41EECB26D27B
+                D7F56EF093C31C7EAC9F62AC68673A0C28C6C2CEDB9F4DD40D502DA19859C3AF
+                E52C0C79C1A070CAD580622CDDF3A3E81C1A11932A5029E37C775BCC34747427
+                02C1A9A606D4CE53A827332F10493DAF1BA04AA8EC01E194A701954D41F57F4C
+                A3A3A7D7062F1C1DE36035EF09A71C73705BCC9CB134C25166641A94EF94F818
+                58A7A531F33ABC544157B815A954186B6DDEC3D8D4C0ED283296C2CF3C702126
+                1735C45A43188C85F0F5617313D7FCBCCE396361E784E39F4457BC44FECCC041
+                0D98D09D3CC7832043C458D8794C17B7828C6E0990F7C2BEAC37B798B69BBB4C
+                2863199480E3F2ED2DB999D8BF819C18A549473E706ABC8A16C642E89DC45FEE
+                9F99B8CA7F78AC3622DE27845A959E8ECDC56BF3B1B7F8CB0D02B7447060F8BD
+                EC02AE00E8603876F458C79F0000000049454E44AE426082}
+            end>
+          Align = Center
+          HitTest = False
+          Padding.Left = 3.000000000000000000
+          Padding.Right = 3.000000000000000000
+          Size.Width = 25.000000000000000000
+          Size.Height = 24.000000000000000000
+          Size.PlatformDefault = False
+        end
+      end
+    end
+  end
+end
