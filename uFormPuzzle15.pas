@@ -1,4 +1,4 @@
-unit uMainP15;
+unit uFormPuzzle15;
 
 interface
 
@@ -9,12 +9,12 @@ uses
   FMX.Controls.Presentation;
 
 type
-  TForm2 = class(TForm)
+  TFormPuzzle15 = class(TForm)
     PanelClient: TPanel;
     Rectangle1: TRectangle;
     RecText: TText;
     RecGradientAni: TGradientAnimation;
-    RectangleMenuCl: TRectangle;
+    PanelMenuCl: TRectangle;
     MenuFloatAnimation: TFloatAnimation;
     GridPanelLayout1: TGridPanelLayout;
     Rectangle33: TRectangle;
@@ -35,7 +35,7 @@ type
     CloseGloomEffect: TGloomEffect;
     CloseGloomEffectAni: TFloatAnimation;
     ImageClose: TImage;
-    RectangleTop: TRectangle;
+    PanelTop: TRectangle;
     LayoutCenter: TLayout;
     RectangleShuffle: TRectangle;
     ImageShuffle: TImage;
@@ -55,6 +55,7 @@ type
     Button1: TButton;
     Button2: TButton;
     Button3: TButton;
+    Panel1: TPanel;
     procedure ButtonCloneClick(Sender: TObject);
     procedure ButtonClone2Click(Sender: TObject);
     procedure CreateRectangles;
@@ -73,6 +74,7 @@ type
     procedure TimerResizeTimer(Sender: TObject);
     procedure TimerTimeTimer(Sender: TObject);
     procedure Button3Click(Sender: TObject);
+    procedure RectangleCloseClick(Sender: TObject);
     type
       TMode = (Game, GameOver, JustShuffled, Folded);
   private
@@ -102,13 +104,13 @@ type
   end;
 
 var
-  Form2: TForm2;
+  FormPuzzle15: TFormPuzzle15;
 
 implementation
 
 {$R *.fmx}
 
-procedure TForm2.FormCreate(Sender: TObject);
+procedure TFormPuzzle15.FormCreate(Sender: TObject);
 begin
   RectangleFillColor := Rectangle1.Fill.Gradient.InterpolateColor(0);
   RectangleFillColor1 := Rectangle1.Fill.Gradient.InterpolateColor(1);
@@ -118,23 +120,23 @@ end;
 
 
 
-procedure TForm2.ButtonMenuClick(Sender: TObject);
+procedure TFormPuzzle15.ButtonMenuClick(Sender: TObject);
 begin
-  if RectangleMenuCl.Visible and (RectangleMenuCl.Height = MenuFloatAnimation.StopValue) then
+  if PanelMenuCl.Visible and (PanelMenuCl.Height = MenuFloatAnimation.StopValue) then
   begin
     MenuFloatAnimation.Inverse := true;
     MenuFloatAnimation.Start;
     exit;
   end;
 
-  RectangleMenuCl.Visible := true;
+  PanelMenuCl.Visible := true;
   MenuFloatAnimation.Inverse := false;
   MenuFloatAnimation.Start;
 end;
 
 
 
-procedure TForm2.CalcConsts;
+procedure TFormPuzzle15.CalcConsts;
 begin
   with PanelClient do
     if (Height > Width) then
@@ -159,7 +161,7 @@ begin
 end;
 
 
-procedure TForm2.AnimatePlaceRectanglesSlow(Sender: TObject);
+procedure TFormPuzzle15.AnimatePlaceRectanglesSlow(Sender: TObject);
 var
   i : Integer;
   Row, Col: Word;
@@ -185,7 +187,7 @@ begin
 end;
 
 
-procedure TForm2.AnimatePlaceRectanglesFast;
+procedure TFormPuzzle15.AnimatePlaceRectanglesFast;
 var
   i: Integer;
   Row, Col: Word;
@@ -212,7 +214,7 @@ end;
 
 
 
-procedure TForm2.CreateRectangles;
+procedure TFormPuzzle15.CreateRectangles;
 var
   i : Integer;
 begin
@@ -274,13 +276,13 @@ end;
 
 
 
-procedure TForm2.ButtonChangeBaseClick(Sender: TObject);
+procedure TFormPuzzle15.ButtonChangeBaseClick(Sender: TObject);
 begin
   Base := (Sender as TRectangle).Tag;
 end;
 
 
-procedure TForm2.SetBase(const Value: integer);
+procedure TFormPuzzle15.SetBase(const Value: integer);
 var
   i : Integer;
 begin
@@ -318,7 +320,7 @@ end;
 
 
 
-procedure TForm2.TimerCreateRectanglesTimer(Sender: TObject);
+procedure TFormPuzzle15.TimerCreateRectanglesTimer(Sender: TObject);
 var
   i : Integer;
 begin
@@ -336,13 +338,13 @@ begin
   AnimatePlaceRectanglesSlow(Self);
 end;
 
-procedure TForm2.TimerResizeTimer(Sender: TObject);
+procedure TFormPuzzle15.TimerResizeTimer(Sender: TObject);
 begin
   RectangleClientResize(TimerResize);
   TimerResize.Enabled := false;
 end;
 
-procedure TForm2.RectangleClientResize(Sender: TObject);
+procedure TFormPuzzle15.RectangleClientResize(Sender: TObject);
 var Hour, Min, Sec, MSec: Word;
 begin
   DecodeTime(Time - LastResizeTime, Hour, Min, Sec, MSec);
@@ -360,7 +362,12 @@ begin
 end;
 
 
-procedure TForm2.AnimateRectanglesDisappeare;
+procedure TFormPuzzle15.RectangleCloseClick(Sender: TObject);
+begin
+  Close;
+end;
+
+procedure TFormPuzzle15.AnimateRectanglesDisappeare;
 var
   i: Integer;
 begin
@@ -381,7 +388,7 @@ end;
 
 
 
-procedure TForm2.CheckFolded;
+procedure TFormPuzzle15.CheckFolded;
 var
   i : Integer;
   LFolded: Boolean;
@@ -459,7 +466,7 @@ end;
 
 
 
-procedure TForm2.MoveRectangle(ARectangle: TRectangle; NewRow, NewCol: Word);
+procedure TFormPuzzle15.MoveRectangle(ARectangle: TRectangle; NewRow, NewCol: Word);
 begin
   ARectangle.Tag := NewRow * Base + NewCol;
 
@@ -476,7 +483,7 @@ end;
 
 
 
-procedure TForm2.ButtonShuffleClick(Sender: TObject);
+procedure TFormPuzzle15.ButtonShuffleClick(Sender: TObject);
 var
   RectanglesOld: array of TRectangle;
   i, NewI, j : Integer;
@@ -561,7 +568,7 @@ end;
 
 
 
-procedure TForm2.TimerReShuffleTimer(Sender: TObject);
+procedure TFormPuzzle15.TimerReShuffleTimer(Sender: TObject);
 begin
   TimerReShuffle.Enabled := false;
   ButtonShuffleClick(TimerReShuffle);
@@ -572,7 +579,7 @@ end;
 
 
 
-procedure TForm2.SetMaxTime;
+procedure TFormPuzzle15.SetMaxTime;
 var
   Sec, Min: Word;
 begin
@@ -582,7 +589,7 @@ begin
 end;
 
 
-procedure TForm2.SetMode(const Value: TMode);
+procedure TFormPuzzle15.SetMode(const Value: TMode);
 begin
   FMode := Value;
   TimerTime.Enabled := (FMode = Game);
@@ -592,12 +599,12 @@ end;
 
 function rc(Row, Col: Integer): Integer; inline;
 begin
-  Result := Row * Form2.Base + Col;
+  Result := Row * FormPuzzle15.Base + Col;
 end;
 
 
 
-procedure TForm2.Rectangle1MouseDown(Sender: TObject; Button: TMouseButton;
+procedure TFormPuzzle15.Rectangle1MouseDown(Sender: TObject; Button: TMouseButton;
   Shift: TShiftState; X, Y: Single);
 var
   Row, Col: Word;
@@ -671,13 +678,13 @@ end;
 
 
 
-procedure TForm2.Button1Click(Sender: TObject);
+procedure TFormPuzzle15.Button1Click(Sender: TObject);
 begin
 //  Rectangle1.Stroke.Thickness := Rectangle1.Stroke.Thickness + 0.5;
   AnimateRectanglesDisappeare;
 end;
 
-procedure TForm2.Button2Click(Sender: TObject);
+procedure TFormPuzzle15.Button2Click(Sender: TObject);
 begin
 //  FrameRectangle1.Scale.Point := PointF(FrameRectangle1.Scale.X + 0.5, FrameRectangle1.Scale.Y + 0.5);
 //  Rectangle1.Scale.Point := PointF(Rectangle1.Scale.X + 0.5, Rectangle1.Scale.Y + 0.5)
@@ -686,7 +693,7 @@ begin
 end;
 
 
-procedure TForm2.Button3Click(Sender: TObject);
+procedure TFormPuzzle15.Button3Click(Sender: TObject);
 var
   i : Integer;
 begin
@@ -700,7 +707,7 @@ begin
 
 end;
 
-procedure TForm2.ButtonCloneClick(Sender: TObject);
+procedure TFormPuzzle15.ButtonCloneClick(Sender: TObject);
 var    RectangleNew: TRectangle;
 begin
 //  RectangleNew := TRectangle(Rectangle1.Clone(Self));
@@ -709,7 +716,7 @@ begin
 //  RectangleNew.Parent := Self;
 end;
 
-procedure TForm2.ButtonClone2Click(Sender: TObject);
+procedure TFormPuzzle15.ButtonClone2Click(Sender: TObject);
 var    RectangleNew: TRectangle;
 begin
 //  RectangleNew := CloneRectangle(Rectangle1, 'RectangleCl' + IntToStr(CloneNum2 + 2));
@@ -724,7 +731,7 @@ end;
 
 
 
-procedure TForm2.TimerTimeTimer(Sender: TObject);
+procedure TFormPuzzle15.TimerTimeTimer(Sender: TObject);
 var
   Min, Sec: Word;
   i: Integer;
