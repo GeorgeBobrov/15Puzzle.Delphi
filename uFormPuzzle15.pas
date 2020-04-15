@@ -60,6 +60,7 @@ type
     TimerClose: TTimer;
     ButtonPuzzleMatched: TButton;
     ButtonTimeOver: TButton;
+    CheckBoxPl1: TCheckBox;
     procedure CreateTiles;
     procedure ButtonMenuClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -69,7 +70,7 @@ type
     procedure ButtonPlaceClick(Sender: TObject);
     procedure ButtonShuffleClick(Sender: TObject);
     procedure TimerReShuffleTimer(Sender: TObject);
-    procedure Tile1MouseDown(Sender: TObject; Button: TMouseButton;
+    procedure TileMouseDown(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Single);
     procedure PanelClientResize(Sender: TObject);
     procedure TimerResizeTimer(Sender: TObject);
@@ -112,7 +113,9 @@ type
 
     property Base: integer read FBase write SetBase;
     property Mode: TMode read FMode write SetMode;
+
     procedure CalcConsts;
+
     procedure MoveTile(ATile: TRectangle; NewRow, NewCol: Word);
     procedure CheckPuzzleMatched;
   end;
@@ -127,10 +130,16 @@ implementation
 
 procedure TFormPuzzle15.FormCreate(Sender: TObject);
 begin
+{$IF defined(MSWINDOWS) or defined(OSX) or defined(LINUX)}
+   PanelClient.OnResize := PanelClientResize;
+{$ENDIF}
+
   TileFillNormalColor := Tile1.Fill.Gradient.InterpolateColor(0);
   TileFillNormalColor1 := Tile1.Fill.Gradient.InterpolateColor(1);
   Base := 4;
 end;
+
+
 
 
 
@@ -169,7 +178,7 @@ begin
   SetMaxTime;
 
   if Length(Tiles) > 0 then
-    TimerCreateTiles.Interval := 520 + 30 * Length(Tiles)
+    TimerCreateTiles.Interval := (520 + 30 * Length(Tiles)) {$IF defined(ANDROID)} * 2  {$ENDIF}
   else
     TimerCreateTiles.Interval := 50;
   TimerCreateTiles.Enabled := true;
@@ -198,8 +207,8 @@ begin
 
 //  Tile1.Position.X := Self.Width - Tile1.Width - 10;
 //  Tile1.Position.Y := Self.Height - Tile1.Height - 10;
-  Tile1.Tag := 0;
-  Tile1.TagFloat := 0;
+  Tile1.Tag := 0;          //Position of Tile in flat array, see ind()
+  Tile1.TagFloat := 0;     //Actual number of Tile
 
   Tile1.Opacity := 0;
 
@@ -221,7 +230,7 @@ begin
     begin
       NewTile := TRectangle(Tile1.Clone(Self));
 
-      NewTile.OnMouseDown := Tile1MouseDown;
+      NewTile.OnMouseDown := TileMouseDown;
       (NewTile.Children[0] as TText).Text := IntToStr(i + 1);
       (NewTile.Children[1] as TGradientAnimation).StartValue.Assign(NewTile.Fill.Gradient);
       (NewTile.Children[1] as TGradientAnimation).StopValue.Assign(NewTile.Fill.Gradient);
@@ -264,63 +273,63 @@ end;
 
 
 
-procedure TFormPuzzle15.Tile1MouseDown(Sender: TObject; Button: TMouseButton;
+procedure TFormPuzzle15.TileMouseDown(Sender: TObject; Button: TMouseButton;
   Shift: TShiftState; X, Y: Single);
 var
-  Row, Col: Word;
-  RowI, ColI, RowEmpty, ColEmpty, RowMoveI, ColMoveI: integer;
+  RowPressed, ColPressed: Word;
+  Row, Col, RowNoTile, ColNoTile, RowToMove, ColToMove: integer;
   SenderTile: TRectangle absolute Sender;
 begin
 
   if (Mode = JustShuffled) then
     Mode := Game;
 
-  DivMod(SenderTile.Tag, Base, Row, Col);
+  DivMod(SenderTile.Tag, Base, RowPressed, ColPressed);
 
-  for RowI := 0 to Base - 1 do
-    if (Tiles[ind(RowI, Col)] = nil) then
+  for Row := 0 to Base - 1 do
+    if (Tiles[ind(Row, ColPressed)] = nil) then
     begin
-      RowEmpty := RowI;
+      RowNoTile := Row;
 
-      if (RowEmpty > Row) then
-        for RowMoveI := RowEmpty - 1 downto Row do
+      if (RowNoTile > RowPressed) then
+        for RowToMove := RowNoTile - 1 downto RowPressed do
         begin
-          Tiles[ind(RowMoveI + 1 , Col)] := Tiles[ind(RowMoveI , Col)];
-          Tiles[ind(RowMoveI , Col)] := nil;
-          MoveTile(Tiles[ind(RowMoveI + 1 , Col)], RowMoveI + 1, Col);
+          Tiles[ind(RowToMove + 1 , ColPressed)] := Tiles[ind(RowToMove , ColPressed)];
+          Tiles[ind(RowToMove , ColPressed)] := nil;
+          MoveTile(Tiles[ind(RowToMove + 1 , ColPressed)], RowToMove + 1, ColPressed);
         end;
 
-      if (Row > RowEmpty) then
-        for RowMoveI := RowEmpty + 1 to Row do
+      if (RowPressed > RowNoTile) then
+        for RowToMove := RowNoTile + 1 to RowPressed do
         begin
-          Tiles[ind(RowMoveI - 1 , Col)] := Tiles[ind(RowMoveI , Col)];
-          Tiles[ind(RowMoveI , Col)] := nil;
-          MoveTile(Tiles[ind(RowMoveI - 1 , Col)], RowMoveI - 1, Col);
+          Tiles[ind(RowToMove - 1 , ColPressed)] := Tiles[ind(RowToMove , ColPressed)];
+          Tiles[ind(RowToMove , ColPressed)] := nil;
+          MoveTile(Tiles[ind(RowToMove - 1 , ColPressed)], RowToMove - 1, ColPressed);
         end;
 
       Exit;
     end;
 
 
-  for ColI := 0 to Base - 1 do
-    if (Tiles[ind(Row , ColI)] = nil) then
+  for Col := 0 to Base - 1 do
+    if (Tiles[ind(RowPressed , Col)] = nil) then
     begin
-      ColEmpty := ColI;
+      ColNoTile := Col;
 
-      if (ColEmpty > Col) then
-        for ColMoveI := ColEmpty - 1 downto Col do
+      if (ColNoTile > ColPressed) then
+        for ColToMove := ColNoTile - 1 downto ColPressed do
         begin
-          Tiles[ind(Row , ColMoveI + 1)] := Tiles[ind(Row , ColMoveI)];
-          Tiles[ind(Row , ColMoveI)] := nil;
-          MoveTile(Tiles[ind(Row , ColMoveI + 1)], Row, ColMoveI + 1);
+          Tiles[ind(RowPressed , ColToMove + 1)] := Tiles[ind(RowPressed , ColToMove)];
+          Tiles[ind(RowPressed , ColToMove)] := nil;
+          MoveTile(Tiles[ind(RowPressed , ColToMove + 1)], RowPressed, ColToMove + 1);
         end;
 
-      if (Col > ColEmpty) then
-        for ColMoveI := ColEmpty + 1 to Col do
+      if (ColPressed > ColNoTile) then
+        for ColToMove := ColNoTile + 1 to ColPressed do
         begin
-          Tiles[ind(Row , ColMoveI - 1)] := Tiles[ind(Row , ColMoveI)];
-          Tiles[ind(Row , ColMoveI)] := nil;
-          MoveTile(Tiles[ind(Row , ColMoveI - 1)], Row, ColMoveI - 1);
+          Tiles[ind(RowPressed , ColToMove - 1)] := Tiles[ind(RowPressed , ColToMove)];
+          Tiles[ind(RowPressed , ColToMove)] := nil;
+          MoveTile(Tiles[ind(RowPressed , ColToMove - 1)], RowPressed, ColToMove - 1);
         end;
 
     end;
@@ -328,15 +337,19 @@ begin
 end;
 
 
+
+
 procedure TFormPuzzle15.MoveTile(ATile: TRectangle; NewRow, NewCol: Word);
+var
+  X, Y : Integer;
 begin
   ATile.Tag := NewRow * Base + NewCol;
+  X := SpaceX + Round(NewCol * (ATile.Width * ATile.Scale.X + TileSpacing));
+  Y := SpaceY + Round(NewRow * (ATile.Height * ATile.Scale.Y + TileSpacing));
 
-  ATile.AnimateFloatDelay('Position.X',
-    SpaceX + Round(NewCol * (ATile.Width * ATile.Scale.X + TileSpacing)),
+  ATile.AnimateFloatDelay('Position.X', X,
     0.15, 0, TAnimationType.Out, TInterpolationType.Exponential);
-  ATile.AnimateFloatDelay('Position.Y',
-    SpaceY + Round(NewRow * (ATile.Height * ATile.Scale.Y + TileSpacing)),
+  ATile.AnimateFloatDelay('Position.Y', Y,
     0.15, 0, TAnimationType.Out, TInterpolationType.Exponential);
 
   CheckPuzzleMatched;
@@ -390,6 +403,7 @@ var
   TilesOld: array of TRectangle;
   i, NewI, j : Integer;
   NewRow, NewCol: Word;
+  X, Y : Integer;
   inv, iValue, jValue: Integer;
 begin
   SetLength(TilesOld, Length(Tiles));
@@ -417,11 +431,12 @@ begin
     begin
       DivMod(Tiles[i].Tag, Base, NewRow, NewCol);
 
-      Tiles[i].AnimateFloatDelay('Position.X',
-        SpaceX + Round(NewCol * (Tiles[i].Width * Tiles[i].Scale.X + TileSpacing)),
+      X := SpaceX + Round(NewCol * (Tiles[i].Width * Tiles[i].Scale.X + TileSpacing));
+      Y := SpaceY + Round(NewRow * (Tiles[i].Height * Tiles[i].Scale.Y + TileSpacing));
+
+      Tiles[i].AnimateFloatDelay('Position.X', X,
         0.4, 0, TAnimationType.Out, TInterpolationType.Exponential );
-      Tiles[i].AnimateFloatDelay('Position.Y',
-        SpaceY + Round(NewRow * (Tiles[i].Height * Tiles[i].Scale.Y + TileSpacing)),
+      Tiles[i].AnimateFloatDelay('Position.Y', Y,
         0.4, 0.01 * i, TAnimationType.Out, TInterpolationType.Exponential );
     end;
 
@@ -675,7 +690,9 @@ begin
   for i := 0 to Length(Tiles) - 1 do
     if (Tiles[i] <> nil) then
     begin
-      Tiles[i].Position := Tile1.Position;
+      if CheckBoxPl1.IsChecked then
+        Tiles[i].Position := Tile1.Position;
+
       Tiles[i].AnimateFloatDelay('Opacity', 1, 0.4 * slowdown, (0.1 + 0.03 * i) * slowdown );
       Tiles[i].AnimateFloatDelay('RotationAngle', 0, 0.4 * slowdown, (0.03 * i) * slowdown );
     end;
