@@ -2,20 +2,19 @@ object FormPuzzle15: TFormPuzzle15
   Left = 500
   Top = 0
   Caption = 'Puzzle15'
-  ClientHeight = 626
-  ClientWidth = 392
-  Position = Default
+  ClientHeight = 484
+  ClientWidth = 386
   FormFactor.Width = 320
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop]
   OnCreate = FormCreate
   OnClose = FormClose
   Left = 500
-  DesignerMasterStyle = 3
+  DesignerMasterStyle = 0
   object PanelClient: TPanel
     Align = Client
-    Size.Width = 392.000000000000000000
-    Size.Height = 521.000000000000000000
+    Size.Width = 386.000000000000000000
+    Size.Height = 444.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 0
     object Tile1: TRectangle
@@ -42,6 +41,7 @@ object FormPuzzle15: TFormPuzzle15
       Stroke.Thickness = 2.000000000000000000
       Stroke.Cap = Round
       Stroke.Join = Round
+      Visible = False
       OnMouseDown = TileMouseDown
       object TileText: TText
         Align = Client
@@ -90,12 +90,12 @@ object FormPuzzle15: TFormPuzzle15
   end
   object PanelTop: TRectangle
     Align = MostTop
-    Size.Width = 392.000000000000000000
+    Size.Width = 386.000000000000000000
     Size.Height = 40.000000000000000000
     Size.PlatformDefault = False
     object LayoutCenter: TLayout
       Align = Client
-      Size.Width = 273.000000000000000000
+      Size.Width = 267.000000000000000000
       Size.Height = 40.000000000000000000
       Size.PlatformDefault = False
       object ButtonShuffle: TRectangle
@@ -191,7 +191,7 @@ object FormPuzzle15: TFormPuzzle15
       Margins.Top = 2.000000000000000000
       Margins.Right = 2.000000000000000000
       Margins.Bottom = 2.000000000000000000
-      Position.X = 336.000000000000000000
+      Position.X = 330.000000000000000000
       Position.Y = 2.000000000000000000
       Size.Width = 54.000000000000000000
       Size.Height = 36.000000000000000000
@@ -305,10 +305,11 @@ object FormPuzzle15: TFormPuzzle15
   end
   object PanelDebug: TPanel
     Align = Top
-    Position.Y = 40.000000000000000000
-    Size.Width = 392.000000000000000000
+    Position.Y = 80.000000000000000000
+    Size.Width = 389.000000000000000000
     Size.Height = 65.000000000000000000
     Size.PlatformDefault = False
+    Visible = False
     TabOrder = 5
     object ButtonDisappeare: TButton
       Position.X = 8.000000000000000000
@@ -382,7 +383,8 @@ object FormPuzzle15: TFormPuzzle15
     Align = Top
     ClipChildren = True
     Fill.Color = xFFDBFEDF
-    Size.Width = 385.000000000000000000
+    Position.Y = 40.000000000000000000
+    Size.Width = 389.000000000000000000
     Size.Height = 40.000000000000000000
     Size.PlatformDefault = False
     Stroke.Color = claSeagreen
@@ -400,21 +402,24 @@ object FormPuzzle15: TFormPuzzle15
     end
     object GridPanelLayout1: TGridPanelLayout
       Align = Client
-      Size.Width = 385.000000000000000000
+      Size.Width = 389.000000000000000000
       Size.Height = 40.000000000000000000
       Size.PlatformDefault = False
       ColumnCollection = <
         item
-          Value = 25.000000000000000000
+          Value = 20.000000320053510000
         end
         item
-          Value = 25.000000000000000000
+          Value = 20.000000689716910000
         end
         item
-          Value = 25.000000000000000000
+          Value = 19.999999854837300000
         end
         item
-          Value = 25.000000000000000000
+          Value = 19.999999404986770000
+        end
+        item
+          Value = 19.999999730405520000
         end>
       ControlCollection = <
         item
@@ -433,13 +438,21 @@ object FormPuzzle15: TFormPuzzle15
           Row = 0
         end
         item
-          Column = 3
+          Column = 4
           Control = ButtonClose
+          Row = 0
+        end
+        item
+          Column = 3
+          Control = SpeedButtonEffects
           Row = 0
         end>
       RowCollection = <
         item
           Value = 100.000000000000000000
+        end
+        item
+          SizeStyle = Auto
         end>
       object Button3x3: TRectangle
         Tag = 3
@@ -646,6 +659,15 @@ object FormPuzzle15: TFormPuzzle15
           Size.Height = 24.000000000000000000
           Size.PlatformDefault = False
         end
+      end
+      object SpeedButtonEffects: TSpeedButton
+        StaysPressed = True
+        Align = Client
+        Size.Width = 77.800003051757810000
+        Size.Height = 40.000000000000000000
+        Size.PlatformDefault = False
+        Text = 'Effects'
+        OnClick = SpeedButtonEffectsClick
       end
     end
   end
