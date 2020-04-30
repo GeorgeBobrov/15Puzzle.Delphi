@@ -10,6 +10,7 @@ object FormPuzzle15: TFormPuzzle15
   FormFactor.Devices = [Desktop]
   OnCreate = FormCreate
   OnClose = FormClose
+  OnKeyUp = FormKeyUp
   Left = 500
   DesignerMasterStyle = 0
   object PanelClient: TPanel
@@ -18,12 +19,13 @@ object FormPuzzle15: TFormPuzzle15
     Size.Height = 444.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 0
+    OnResize = PanelClientResize
     object Tile1: TRectangle
       Fill.Kind = Gradient
       Fill.Gradient.Points = <
         item
           Color = xFFABE024
-          Offset = 0.086816720664501190
+          Offset = 0.086816720664501180
         end
         item
           Color = claBisque
@@ -59,7 +61,7 @@ object FormPuzzle15: TFormPuzzle15
         TextSettings.Font.Size = 15.000000000000000000
       end
       object TileGradientAni: TGradientAnimation
-        Duration = 0.400000005960464500
+        Duration = 0.400000005960464400
         PropertyName = 'Fill.Gradient'
         StartValue.Points = <
           item
@@ -82,27 +84,22 @@ object FormPuzzle15: TFormPuzzle15
           end>
       end
     end
-    object TimerClose: TTimer
-      Enabled = False
-      OnTimer = TimerCloseTimer
-      Left = 500
-      Top = 120
-    end
   end
   object PanelTop: TRectangle
+    OnTap = PanelTopTap
     Align = MostTop
     Size.Width = 386.000000000000000000
     Size.Height = 40.000000000000000000
     Size.PlatformDefault = False
+    OnDblClick = ShowDebug
     object LayoutCenter: TLayout
       Align = Client
       Size.Width = 267.000000000000000000
       Size.Height = 40.000000000000000000
       Size.PlatformDefault = False
+      OnDblClick = ShowDebug
       object ButtonShuffle: TRectangle
         Align = Center
-        Fill.Bitmap.WrapMode = TileOriginal
-        Fill.Kind = Bitmap
         Padding.Left = 2.000000000000000000
         Padding.Top = 2.000000000000000000
         Padding.Right = 2.000000000000000000
@@ -159,7 +156,6 @@ object FormPuzzle15: TFormPuzzle15
           Size.PlatformDefault = False
         end
         object ShuffleStrokeColorAni: TColorAnimation
-          Enabled = True
           Duration = 0.200000002980232200
           PropertyName = 'Stroke.Color'
           StartValue = xFFADADAD
@@ -175,28 +171,33 @@ object FormPuzzle15: TFormPuzzle15
           BaseSaturation = 0.500000000000000000
           object ShuffleGloomEffectAni: TFloatAnimation
             AutoReverse = True
-            Duration = 0.800000011920929000
+            Duration = 0.800000011920928900
             Loop = True
             PropertyName = 'BaseIntensity'
             StartValue = 1.000000000000000000
             StopValue = 0.500000000000000000
           end
         end
-      end
-      object LabelResize: TLabel
-        Position.X = 8.000000000000000000
-        Position.Y = 12.000000000000000000
-        Size.Width = 89.000000000000000000
-        Size.Height = 17.000000000000000000
-        Size.PlatformDefault = False
-        Text = 'Resize'
-        TabOrder = 0
+        object ShuffleFillColorAni: TColorAnimation
+          AutoReverse = True
+          Duration = 0.800000011920928900
+          Loop = True
+          PropertyName = 'Fill.Color'
+          StartValue = claAliceblue
+          StopValue = claNavajowhite
+        end
+        object ShuffleFillColorAniMouseOver: TColorAnimation
+          Duration = 0.200000002980232200
+          PropertyName = 'Fill.Color'
+          StartValue = xFFE0E0E0
+          StopValue = claAliceblue
+          Trigger = 'IsMouseOver=true'
+          TriggerInverse = 'IsMouseOver=false'
+        end
       end
     end
     object ButtonMenu: TRectangle
       Align = MostRight
-      Fill.Bitmap.WrapMode = TileOriginal
-      Fill.Kind = Bitmap
       Margins.Left = 2.000000000000000000
       Margins.Top = 2.000000000000000000
       Margins.Right = 2.000000000000000000
@@ -218,14 +219,14 @@ object FormPuzzle15: TFormPuzzle15
               F8000000017352474200AECE1CE90000000467414D410000B18F0BFC61050000
               011B49444154484B63185EC0BBF09134944935C008A5C1C02FFF99DD7F2686D8
               3F8CDF03FF7EFCCCC5C0C00295C10DB87819399918FF323032B37EF8FD8F6FE3
-              BF3FFF366F9924BB162A8D6A4160D9CB994F195F272BB308323331FC07CA3241
+              BF3FFF366F9924BB162A8D6A4160D9CB998F195F27ABB208323331FC07CA3241
               65F0837FFFFF30FCFFCFC8C0CEC5F68B898177DFFC1A2E4FA81403AA09FFFEB3
-              CB328A3DE0E3136010101265E01710228805048519F8F98519787905800EE2FF
-              C4C0C4086420008A05FF7EFF99C0CCF0AF9E9393F935CFA7A77F393EBF2088D9
+              CB338A3DE0E3136010101265E01710228805048519F8F98519787905800EE2FF
+              C4C0C4086420008A05FF7EFF99C0CCF0AF9E9393F935CFA7C77F393E3F2388D9
               D9591978B9D919D878983E7FFBF461F6DB376FB3A0C681014A1079E4DE626711
               E266569392E2626701FAF90B54021F60FC25CCC0CEC0F09381FDCDB52BB73FF3
-              BE50FDB37A35305206048C26D3E1994C8719184DA6A3C9744402060600D84D0B
-              B953D1E8090000000049454E44AE426082}
+              BE50FDB37A35305206048C26D3E1994C8719184DA6A3C9744402060600038F0B
+              83C741AA8D0000000049454E44AE426082}
           end>
         Align = Client
         HitTest = False
@@ -237,7 +238,6 @@ object FormPuzzle15: TFormPuzzle15
         WrapMode = Center
       end
       object ButtonMenuStrokeColorAni: TColorAnimation
-        Enabled = True
         Duration = 0.200000002980232200
         PropertyName = 'Stroke.Color'
         StartValue = xFFADADAD
@@ -253,7 +253,7 @@ object FormPuzzle15: TFormPuzzle15
         BaseSaturation = 0.500000000000000000
         object ButtonMenuGloomAni: TFloatAnimation
           AutoReverse = True
-          Duration = 0.800000011920929000
+          Duration = 0.800000011920928900
           Loop = True
           PropertyName = 'BaseIntensity'
           StartValue = 1.000000000000000000
@@ -317,7 +317,7 @@ object FormPuzzle15: TFormPuzzle15
     Align = Top
     Position.Y = 40.000000000000000000
     Size.Width = 386.000000000000000000
-    Size.Height = 94.000000000000000000
+    Size.Height = 89.000000000000000000
     Size.PlatformDefault = False
     Visible = False
     TabOrder = 5
@@ -347,8 +347,8 @@ object FormPuzzle15: TFormPuzzle15
     end
     object ButtonTimeRunningOut: TButton
       StyledSettings = [Family, Style, FontColor]
-      Position.X = 232.000000000000000000
-      Position.Y = 5.000000000000000000
+      Position.X = 120.000000000000000000
+      Position.Y = 34.000000000000000000
       Size.Width = 105.000000000000000000
       Size.Height = 25.000000000000000000
       Size.PlatformDefault = False
@@ -359,8 +359,8 @@ object FormPuzzle15: TFormPuzzle15
     end
     object ButtonBaseNotChanged: TButton
       StyledSettings = [Family, Style, FontColor]
-      Position.X = 7.000000000000000000
-      Position.Y = 34.000000000000000000
+      Position.X = 231.000000000000000000
+      Position.Y = 5.000000000000000000
       Size.Width = 105.000000000000000000
       Size.Height = 25.000000000000000000
       Size.PlatformDefault = False
@@ -371,7 +371,7 @@ object FormPuzzle15: TFormPuzzle15
     end
     object ButtonPuzzleMatched: TButton
       StyledSettings = [Family, Style, FontColor]
-      Position.X = 120.000000000000000000
+      Position.X = 8.000000000000000000
       Position.Y = 34.000000000000000000
       Size.Width = 105.000000000000000000
       Size.Height = 25.000000000000000000
@@ -393,46 +393,36 @@ object FormPuzzle15: TFormPuzzle15
       TextSettings.Font.Size = 11.000000000000000000
       OnClick = ButtonTimeOverClick
     end
-    object CheckBoxPl1: TCheckBox
-      IsChecked = True
-      Position.X = 344.000000000000000000
-      Position.Y = 8.000000000000000000
-      TabOrder = 7
-      Text = 'Pl1'
-    end
-    object SpeedButtonGloomEffect: TSpeedButton
-      StaysPressed = True
-      GroupName = 'GloomEffect'
-      StyledSettings = [Family, Style, FontColor]
-      Position.X = 8.000000000000000000
-      Position.Y = 64.000000000000000000
-      Size.Width = 105.000000000000000000
-      Size.Height = 48.000000000000000000
-      Size.PlatformDefault = False
-      Text = 'Gloom Effect'
-      TextSettings.Font.Size = 11.000000000000000000
-      OnClick = SpeedButtonGloomEffectClick
-    end
-    object SpeedButtonGloomEffectAni: TSpeedButton
-      StaysPressed = True
-      GroupName = 'GloomEffectAni'
-      StyledSettings = [Family, Style, FontColor]
-      Position.X = 120.000000000000000000
-      Position.Y = 64.000000000000000000
-      Size.Width = 105.000000000000000000
-      Size.Height = 48.000000000000000000
-      Size.PlatformDefault = False
-      Text = 'Gloom Effect Ani'
-      TextSettings.Font.Size = 11.000000000000000000
-      OnClick = SpeedButtonGloomEffectAniClick
-    end
     object PanelDebugAnimation: TFloatAnimation
       AnimationType = Out
-      Duration = 0.400000005960464500
+      Duration = 0.400000005960464400
       Interpolation = Back
       PropertyName = 'Height'
       StartValue = 0.000000000000000000
-      StopValue = 94.000000000000000000
+      StopValue = 90.000000000000000000
+    end
+    object TrackBarSlowdown: TTrackBar
+      CanParentFocus = True
+      Frequency = 1.000000000000000000
+      Max = 5.000000000000000000
+      Orientation = Horizontal
+      Position.X = 120.000000000000000000
+      Position.Y = 64.000000000000000000
+      Size.Width = 217.000000000000000000
+      Size.Height = 20.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 7
+      Value = 1.000000000000000000
+      OnChange = TrackBarSlowdownChange
+    end
+    object LabelSpeed: TLabel
+      Position.X = 8.000000000000000000
+      Position.Y = 65.000000000000000000
+      Size.Width = 105.000000000000000000
+      Size.Height = 17.000000000000000000
+      Size.PlatformDefault = False
+      Text = 'Speed'
+      TabOrder = 8
     end
   end
   object PanelMenu: TRectangle
@@ -449,7 +439,7 @@ object FormPuzzle15: TFormPuzzle15
     YRadius = 3.000000000000000000
     object PanelMenuAnimation: TFloatAnimation
       AnimationType = Out
-      Duration = 0.400000005960464500
+      Duration = 0.400000005960464400
       Interpolation = Back
       Inverse = True
       PropertyName = 'Height'
@@ -463,16 +453,13 @@ object FormPuzzle15: TFormPuzzle15
       Size.PlatformDefault = False
       ColumnCollection = <
         item
-          Value = 25.000000315818610000
+          Value = 33.333333386418230000
         end
         item
-          Value = 25.000000777897860000
+          Value = 33.333334002523880000
         end
         item
-          Value = 24.999999734298340000
-        end
-        item
-          Value = 24.999999171985190000
+          Value = 33.333332611057880000
         end>
       ControlCollection = <
         item
@@ -489,18 +476,10 @@ object FormPuzzle15: TFormPuzzle15
           Column = 2
           Control = Button5x5
           Row = 0
-        end
-        item
-          Column = 3
-          Control = SpeedButtonEffects
-          Row = 0
         end>
       RowCollection = <
         item
           Value = 100.000000000000000000
-        end
-        item
-          SizeStyle = Auto
         end>
       object Button3x3: TRectangle
         Tag = 3
@@ -527,7 +506,7 @@ object FormPuzzle15: TFormPuzzle15
           TextSettings.Font.Size = 15.000000000000000000
           TextSettings.WordWrap = False
         end
-        object ColorAnimation33: TColorAnimation
+        object ColorAnimation33Fill: TColorAnimation
           Duration = 0.200000002980232200
           PropertyName = 'Fill.Color'
           StartValue = claCornsilk
@@ -535,7 +514,7 @@ object FormPuzzle15: TFormPuzzle15
           Trigger = 'IsMouseOver=true'
           TriggerInverse = 'IsMouseOver=false'
         end
-        object ColorAnimation4: TColorAnimation
+        object ColorAnimation33Stroke: TColorAnimation
           Enabled = True
           Duration = 0.200000002980232200
           Inverse = True
@@ -573,7 +552,7 @@ object FormPuzzle15: TFormPuzzle15
           TextSettings.Font.Size = 15.000000000000000000
           TextSettings.WordWrap = False
         end
-        object ColorAnimation5: TColorAnimation
+        object ColorAnimation44Stroke: TColorAnimation
           Enabled = True
           Duration = 0.200000002980232200
           Inverse = True
@@ -583,7 +562,7 @@ object FormPuzzle15: TFormPuzzle15
           Trigger = 'IsMouseOver=true'
           TriggerInverse = 'IsMouseOver=false'
         end
-        object ColorAnimation6: TColorAnimation
+        object ColorAnimation44Fill: TColorAnimation
           Duration = 0.200000002980232200
           PropertyName = 'Fill.Color'
           StartValue = claCornsilk
@@ -617,7 +596,7 @@ object FormPuzzle15: TFormPuzzle15
           TextSettings.Font.Size = 15.000000000000000000
           TextSettings.WordWrap = False
         end
-        object ColorAnimation55: TColorAnimation
+        object ColorAnimation55Fill: TColorAnimation
           Duration = 0.200000002980232200
           PropertyName = 'Fill.Color'
           StartValue = claCornsilk
@@ -625,7 +604,7 @@ object FormPuzzle15: TFormPuzzle15
           Trigger = 'IsMouseOver=true'
           TriggerInverse = 'IsMouseOver=false'
         end
-        object ColorAnimation3: TColorAnimation
+        object ColorAnimation55Stroke: TColorAnimation
           Enabled = True
           Duration = 0.200000002980232200
           Inverse = True
@@ -636,15 +615,12 @@ object FormPuzzle15: TFormPuzzle15
           TriggerInverse = 'IsMouseOver=false'
         end
       end
-      object SpeedButtonEffects: TSpeedButton
-        StaysPressed = True
-        Align = Client
-        Size.Width = 96.500000000000000000
-        Size.Height = 40.000000000000000000
-        Size.PlatformDefault = False
-        Text = 'Effects'
-        OnClick = SpeedButtonEffectsClick
-      end
     end
+  end
+  object TimerClose: TTimer
+    Enabled = False
+    OnTimer = TimerCloseTimer
+    Left = 500
+    Top = 120
   end
 end
