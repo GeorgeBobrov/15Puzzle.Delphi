@@ -1,15 +1,15 @@
-program Pazzle15;
+program P15Pazzle;
 
 uses
   System.StartUpCopy,
   FMX.Forms,
-  uFormPuzzle15 in 'uFormPuzzle15.pas' {FormPuzzle15};
+  uForm15Puzzle in 'uForm15Puzzle.pas' {Form15Puzzle};
 
 {$R *.res}
 
 begin
   Application.Initialize;
   Application.FormFactor.Orientations := [TFormOrientation.Portrait, TFormOrientation.InvertedPortrait, TFormOrientation.Landscape, TFormOrientation.InvertedLandscape];
-  Application.CreateForm(TFormPuzzle15, FormPuzzle15);
+  Application.CreateForm(TForm15Puzzle, Form15Puzzle);
   Application.Run;
 end.

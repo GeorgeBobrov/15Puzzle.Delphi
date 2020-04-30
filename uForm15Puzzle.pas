@@ -1,4 +1,4 @@
-unit uFormPuzzle15;
+unit uForm15Puzzle;
 
 interface
 
@@ -9,7 +9,7 @@ uses
   FMX.Controls.Presentation, FMX.ListBox, FMX.ScrollBox, FMX.Memo;
 
 type
-  TFormPuzzle15 = class(TForm)
+  TForm15Puzzle = class(TForm)
     PanelClient: TPanel;
     Tile1: TRectangle;
     TileText: TText;
@@ -96,6 +96,7 @@ type
     procedure SetMode(const Value: TMode);
     procedure SetMaxTime;
     procedure SetBase(const Value: integer);
+    function ind(Row, Col: Integer): Integer; inline;
   public
     { Public declarations }
     Tiles: array of TRectangle;
@@ -134,7 +135,7 @@ type
   end;
 
 var
-  FormPuzzle15: TFormPuzzle15;
+  Form15Puzzle: TForm15Puzzle;
 
 implementation
 
@@ -146,7 +147,7 @@ const
   MinMoveAniDuration = 0.001;
 
 
-procedure TFormPuzzle15.FormCreate(Sender: TObject);
+procedure TForm15Puzzle.FormCreate(Sender: TObject);
 begin
   LastResizeTime := Time;   //To prevent resize on start on Android
 
@@ -179,7 +180,7 @@ end;
 
 
 
-procedure TFormPuzzle15.SetMode(const Value: TMode);
+procedure TForm15Puzzle.SetMode(const Value: TMode);
 begin
   FMode := Value;
   TimerTime.Enabled := (FMode = Game);
@@ -189,13 +190,13 @@ end;
 
 
 
-procedure TFormPuzzle15.ButtonChangeBaseClick(Sender: TObject);
+procedure TForm15Puzzle.ButtonChangeBaseClick(Sender: TObject);
 begin
   Base := (Sender as TRectangle).Tag;
 end;
 
 
-procedure TFormPuzzle15.SetBase(const Value: integer);
+procedure TForm15Puzzle.SetBase(const Value: integer);
 begin
   if (Value = Base) then
   begin
@@ -220,7 +221,7 @@ end;
 
 
 
-procedure TFormPuzzle15.TimerCreateTilesTimer(Sender: TObject);
+procedure TForm15Puzzle.TimerCreateTilesTimer(Sender: TObject);
 begin
   TimerCreateTiles.Enabled := false;
   CreateTiles;
@@ -230,7 +231,7 @@ begin
 end;
 
 
-procedure TFormPuzzle15.CreateTiles;
+procedure TForm15Puzzle.CreateTiles;
 var
   i : Integer;
   NewTile: TRectangle;
@@ -291,14 +292,14 @@ end;
 
 
 
-function ind(Row, Col: Integer): Integer; inline;
+function TForm15Puzzle.ind(Row, Col: Integer): Integer; inline;
 begin
-  Result := Row * FormPuzzle15.Base + Col;
+  Result := Row * Base + Col;
 end;
 
 
 
-procedure TFormPuzzle15.TileMouseDown(Sender: TObject; Button: TMouseButton;
+procedure TForm15Puzzle.TileMouseDown(Sender: TObject; Button: TMouseButton;
   Shift: TShiftState; X, Y: Single);
 var
   SenderTile: TRectangle absolute Sender;
@@ -316,7 +317,7 @@ end;
 
 
 
-function TFormPuzzle15.TryMoveTile(TilePosition: integer; MoveAniDuration: single): Boolean;
+function TForm15Puzzle.TryMoveTile(TilePosition: integer; MoveAniDuration: single): Boolean;
 var
   RowPressed, ColPressed: Word;
   Row, Col, RowNoTile, ColNoTile, RowToMove, ColToMove: integer;
@@ -397,7 +398,7 @@ begin
 end;
 
 
-procedure TFormPuzzle15.AnimateMoveTile(ATile: TRectangle; MoveAniDuration: single);
+procedure TForm15Puzzle.AnimateMoveTile(ATile: TRectangle; MoveAniDuration: single);
 var
   NewRow, NewCol: Word;
   X, Y : Integer;
@@ -429,7 +430,7 @@ end;
 
 
 
-procedure TFormPuzzle15.CheckPuzzleMatched;
+procedure TForm15Puzzle.CheckPuzzleMatched;
 var
   i : Integer;
   LPuzzleMatched: Boolean;
@@ -476,7 +477,7 @@ end;
 
 
 
-procedure TFormPuzzle15.ButtonShuffleClick(Sender: TObject);
+procedure TForm15Puzzle.ButtonShuffleClick(Sender: TObject);
 var
   i, NewI : Integer;
   MoveCount: Integer;
@@ -530,7 +531,7 @@ end;
 
 
 
-function TFormPuzzle15.CheckCanPuzzleMatch: Boolean;
+function TForm15Puzzle.CheckCanPuzzleMatch: Boolean;
 var
   i, j: Integer;
   iValue, jValue: Integer;
@@ -556,7 +557,7 @@ begin
   Result := not Odd(inv);
 end;
 
-procedure TFormPuzzle15.StartBlinkShuffle;
+procedure TForm15Puzzle.StartBlinkShuffle;
 begin
   ShuffleGloomEffect.BaseIntensity := 1;
   ShuffleGloomEffect.BaseSaturation := 1;
@@ -570,7 +571,7 @@ begin
 {$ENDIF}
 end;
 
-procedure TFormPuzzle15.StopBlinkShuffle;
+procedure TForm15Puzzle.StopBlinkShuffle;
 begin
   ShuffleGloomEffectAni.Enabled := false;
   ShuffleGloomEffect.BaseIntensity := 0.5;
@@ -586,7 +587,7 @@ begin
 {$ENDIF}
 end;
 
-procedure TFormPuzzle15.SetMaxTime;
+procedure TForm15Puzzle.SetMaxTime;
 var
   Sec, Min: Word;
 begin
@@ -596,7 +597,7 @@ begin
 end;
 
 
-procedure TFormPuzzle15.TimerReShuffleTimer(Sender: TObject);
+procedure TForm15Puzzle.TimerReShuffleTimer(Sender: TObject);
 begin
   TimerReShuffle.Enabled := false;
   ButtonShuffleClick(TimerReShuffle);
@@ -605,7 +606,7 @@ end;
 
 
 
-procedure TFormPuzzle15.PanelClientResize(Sender: TObject);
+procedure TForm15Puzzle.PanelClientResize(Sender: TObject);
 begin
     TimerResize.Enabled := false;
     TimerResize.Enabled := true;
@@ -614,7 +615,7 @@ end;
 
 
 
-procedure TFormPuzzle15.TimerResizeTimer(Sender: TObject);
+procedure TForm15Puzzle.TimerResizeTimer(Sender: TObject);
 var
   TimeFromLastResize_ms: Extended;
 //Hour, Min, Sec, MSec: Word;
@@ -635,7 +636,7 @@ begin
 
 end;
 
-procedure TFormPuzzle15.CalcConsts;
+procedure TForm15Puzzle.CalcConsts;
 begin
   with PanelClient do
     if (Height > Width) then
@@ -661,7 +662,7 @@ end;
 
 var slowdown: double = 1;
 
-procedure TFormPuzzle15.TrackBarSlowdownChange(Sender: TObject);
+procedure TForm15Puzzle.TrackBarSlowdownChange(Sender: TObject);
 begin
   case Round(TrackBarSlowdown.Value) of
     0: slowdown := 0.5;
@@ -674,7 +675,7 @@ begin
   LabelSpeed.Text := 'Speed'#9'1/' + FloatToStr(slowdown);
 end;
 
-procedure TFormPuzzle15.AnimatePlaceTilesSlow;
+procedure TForm15Puzzle.AnimatePlaceTilesSlow;
 var
   i, X, Y : Integer;
   Row, Col: Word;
@@ -708,7 +709,7 @@ end;
 
 
 
-procedure TFormPuzzle15.AnimatePlaceTilesFast;
+procedure TForm15Puzzle.AnimatePlaceTilesFast;
 var
   i, X, Y: Integer;
   Row, Col: Word;
@@ -737,7 +738,7 @@ begin
 end;
 
 
-procedure TFormPuzzle15.AnimateBaseNotChanged;
+procedure TForm15Puzzle.AnimateBaseNotChanged;
 var
   i : Integer;
 begin
@@ -759,7 +760,7 @@ end;
 
 
 
-procedure TFormPuzzle15.AnimateTilesDisappeare;
+procedure TForm15Puzzle.AnimateTilesDisappeare;
 var
   i: Integer;
 begin
@@ -780,7 +781,7 @@ end;
 
 
 
-procedure TFormPuzzle15.AnimatePrepareBeforePlace;
+procedure TForm15Puzzle.AnimatePrepareBeforePlace;
 var
   i, X, Y: Integer;
   Row, Col: Word;
@@ -821,7 +822,7 @@ end;
 
 
 
-procedure TFormPuzzle15.AnimateTimeRunningOut;
+procedure TForm15Puzzle.AnimateTimeRunningOut;
 var
   i: Integer;
   GradientAni: TGradientAnimation;
@@ -844,7 +845,7 @@ begin
 end;
 
 
-procedure TFormPuzzle15.AnimateTimeOver;
+procedure TForm15Puzzle.AnimateTimeOver;
 var
   i : Integer;
 var  GradientAni: TGradientAnimation ;
@@ -869,7 +870,7 @@ end;
 
 
 
-procedure TFormPuzzle15.AnimateNormalizeTilesColor;
+procedure TForm15Puzzle.AnimateNormalizeTilesColor;
 var
   i : Integer;
 var  GradientAni: TGradientAnimation ;
@@ -891,7 +892,7 @@ begin
 
 end;
 
-procedure TFormPuzzle15.AnimatePuzzleMatched;
+procedure TForm15Puzzle.AnimatePuzzleMatched;
 var
   i : Integer;
 //  Delay: Extended;
@@ -929,7 +930,7 @@ end;
 
 
 
-procedure TFormPuzzle15.ButtonMenuClick(Sender: TObject);
+procedure TForm15Puzzle.ButtonMenuClick(Sender: TObject);
 begin
   if not PanelMenu.Visible then
   begin
@@ -947,7 +948,7 @@ end;
 
 
 
-procedure TFormPuzzle15.PanelTopTap(Sender: TObject; const Point: TPointF);
+procedure TForm15Puzzle.PanelTopTap(Sender: TObject; const Point: TPointF);
 var
   TimeFromLastTap_ms: Extended;
 begin
@@ -960,7 +961,7 @@ begin
 end;
 
 
-procedure TFormPuzzle15.ShowDebug(Sender: TObject);
+procedure TForm15Puzzle.ShowDebug(Sender: TObject);
 begin
 
   if not PanelDebug.Visible then
@@ -980,7 +981,7 @@ begin
 end;
 
 
-procedure TFormPuzzle15.TimerTimeTimer(Sender: TObject);
+procedure TForm15Puzzle.TimerTimeTimer(Sender: TObject);
 var
   Min, Sec: Word;
 begin
@@ -1005,12 +1006,12 @@ end;
 
 
 
-procedure TFormPuzzle15.ButtonCloseClick(Sender: TObject);
+procedure TForm15Puzzle.ButtonCloseClick(Sender: TObject);
 begin
   Close;
 end;
 
-procedure TFormPuzzle15.FormKeyUp(Sender: TObject; var Key: Word;
+procedure TForm15Puzzle.FormKeyUp(Sender: TObject; var Key: Word;
   var KeyChar: Char; Shift: TShiftState);
 begin
   if Key = vkHardwareBack then
@@ -1021,7 +1022,7 @@ begin
 
 end;
 
-procedure TFormPuzzle15.FormClose(Sender: TObject; var Action: TCloseAction);
+procedure TForm15Puzzle.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   if not ClosingAnimation then
   begin
@@ -1034,14 +1035,14 @@ begin
   end;
 end;
 
-procedure TFormPuzzle15.TimerCloseTimer(Sender: TObject);
+procedure TForm15Puzzle.TimerCloseTimer(Sender: TObject);
 begin
   Close;
 end;
 
 
 
-procedure TFormPuzzle15.ButtonDisappeareClick(Sender: TObject);
+procedure TForm15Puzzle.ButtonDisappeareClick(Sender: TObject);
 begin
   if GreenTiles then
   begin
@@ -1051,7 +1052,7 @@ begin
   AnimateTilesDisappeare;
 end;
 
-procedure TFormPuzzle15.ButtonPlaceClick(Sender: TObject);
+procedure TForm15Puzzle.ButtonPlaceClick(Sender: TObject);
 begin
   if GreenTiles then
   begin
@@ -1063,17 +1064,17 @@ begin
 end;
 
 
-procedure TFormPuzzle15.ButtonTimeRunningOutClick(Sender: TObject);
+procedure TForm15Puzzle.ButtonTimeRunningOutClick(Sender: TObject);
 begin
   AnimateTimeRunningOut;
 end;
 
-procedure TFormPuzzle15.ButtonTimeOverClick(Sender: TObject);
+procedure TForm15Puzzle.ButtonTimeOverClick(Sender: TObject);
 begin
   AnimateTimeOver;
 end;
 
-procedure TFormPuzzle15.ButtonPuzzleMatchedClick(Sender: TObject);
+procedure TForm15Puzzle.ButtonPuzzleMatchedClick(Sender: TObject);
 begin
   GreenTiles := true;
   AnimatePuzzleMatched;
@@ -1083,7 +1084,7 @@ end;
 
 
 
-procedure TFormPuzzle15.ButtonBaseNotChangedClick(Sender: TObject);
+procedure TForm15Puzzle.ButtonBaseNotChangedClick(Sender: TObject);
 begin
   if GreenTiles then
   begin
@@ -1094,7 +1095,7 @@ begin
 end;
 
 
-procedure TFormPuzzle15.ComboBoxQualityChange(Sender: TObject);
+procedure TForm15Puzzle.ComboBoxQualityChange(Sender: TObject);
 begin
 //  Quality := TCanvasQuality(ComboBoxQuality.ItemIndex);
 
