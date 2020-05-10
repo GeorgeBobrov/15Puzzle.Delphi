@@ -6,7 +6,7 @@ uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.StdCtrls,
   FMX.Layouts, FMX.Objects, FMX.Effects, FMX.Filter.Effects, FMX.Ani, Math,
-  FMX.Controls.Presentation, FMX.ListBox, FMX.ScrollBox, FMX.Memo;
+  FMX.Controls.Presentation, FMX.ListBox, FMX.ScrollBox, FMX.Memo, FMX.Edit;
 
 type
   TForm15Puzzle = class(TForm)
@@ -44,7 +44,6 @@ type
     ButtonMenuGloomAni: TFloatAnimation;
     PanelTime: TRectangle;
     TextTime: TText;
-    TimerReShuffle: TTimer;
     TimerResize: TTimer;
     TimerTime: TTimer;
     ButtonDisappeare: TButton;
@@ -68,14 +67,12 @@ type
     procedure ButtonDisappeareClick(Sender: TObject);
     procedure ButtonPlaceClick(Sender: TObject);
     procedure ButtonShuffleClick(Sender: TObject);
-    procedure TimerReShuffleTimer(Sender: TObject);
     procedure TileMouseDown(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Single);
     procedure PanelClientResize(Sender: TObject);
     procedure TimerResizeTimer(Sender: TObject);
     procedure TimerTimeTimer(Sender: TObject);
     procedure ButtonTimeRunningOutClick(Sender: TObject);
-    procedure ButtonCloseClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure ButtonBaseNotChangedClick(Sender: TObject);
     procedure TimerCloseTimer(Sender: TObject);
@@ -87,6 +84,7 @@ type
     procedure TrackBarSlowdownChange(Sender: TObject);
     procedure ShowDebug(Sender: TObject);
     procedure PanelTopTap(Sender: TObject; const Point: TPointF);
+    procedure ButtonFontClick(Sender: TObject);
     type
       TMode = (Game, GameOver, JustShuffled, PuzzleMatched);
   private
@@ -126,6 +124,8 @@ type
     procedure AnimateTilesDisappeare;
     procedure AnimatePrepareBeforePlace;
     procedure AnimateBaseNotChanged;
+    procedure AnimateBaseNotChanged1;
+    procedure AnimateBaseNotChanged2;
     procedure AnimateTimeRunningOut;
     procedure AnimatePuzzleMatched;
     procedure AnimateTimeOver;
@@ -245,6 +245,12 @@ begin
   Tile1.Opacity := 0;
   Tile1.Visible := true;
 
+  Tile1.Fill.Gradient.Color := TileFillNormalColor;
+  Tile1.Fill.Gradient.Color1 := TileFillNormalColor1;
+  (Tile1.Children[1] as TGradientAnimation).StartValue.Assign(Tile1.Fill.Gradient);
+  (Tile1.Children[1] as TGradientAnimation).StopValue.Assign(Tile1.Fill.Gradient);
+
+
 
   for i := 0 to Length(Tiles) - 1 do
     if (Tiles[i] <> nil) then
@@ -265,16 +271,9 @@ begin
 
       NewTile.OnMouseDown := TileMouseDown;
       (NewTile.Children[0] as TText).Text := IntToStr(i + 1);
-      (NewTile.Children[1] as TGradientAnimation).StartValue.Assign(NewTile.Fill.Gradient);
-      (NewTile.Children[1] as TGradientAnimation).StopValue.Assign(NewTile.Fill.Gradient);
-//      (NewTile.Children[1] as TGradientAnimation).OnFinish := RecGradientAniFinish;
 
       NewTile.TagFloat := i;
 
-
-//      NewTile.Position.X := Tile1.Position.X;
-//      NewTile.Position.Y := Tile1.Position.Y;
-//      NewTile.Opacity := 1;
       NewTile.Parent := PanelClient;
       NewTile.SendToBack;
 
@@ -290,9 +289,7 @@ end;
 
 
 
-
-
-function TForm15Puzzle.ind(Row, Col: Integer): Integer; inline;
+function TForm15Puzzle.ind(Row, Col: Integer): Integer;
 begin
   Result := Row * Base + Col;
 end;
@@ -467,22 +464,14 @@ end;
 
 
 
-
-
-
-
-
-
-
-
-
-
 procedure TForm15Puzzle.ButtonShuffleClick(Sender: TObject);
 var
   i, NewI : Integer;
   MoveCount: Integer;
   MoveAniDuration: Single;
 begin
+  AnimateNormalizeTilesColor;
+
   WaitAnimationEnd := true;
   MoveCount := Length(Tiles) * Length(Tiles);
   MoveAniDuration := MaxMoveAniDuration;
@@ -512,14 +501,6 @@ begin
   SetMaxTime;
 
   StopBlinkShuffle;
-
-//  if not CheckCanPuzzleMatch then
-//  begin
-//    TimerReShuffle.Interval := 400 + 10 * Length(Tiles);
-//    TimerReShuffle.Enabled := true;
-//    exit;
-//  end;
-
 
   Mode := JustShuffled;
 
@@ -557,35 +538,7 @@ begin
   Result := not Odd(inv);
 end;
 
-procedure TForm15Puzzle.StartBlinkShuffle;
-begin
-  ShuffleGloomEffect.BaseIntensity := 1;
-  ShuffleGloomEffect.BaseSaturation := 1;
-  ShuffleGloomEffect.GloomIntensity := 0;
-  ShuffleGloomEffect.GloomSaturation := 0;
-  ShuffleGloomEffectAni.Enabled := true;
 
-{$IF defined(ANDROID)}
-  ButtonShuffle.Stroke.Color := ShuffleStrokeColorAni.StopValue;
-  ShuffleFillColorAni.Enabled := true;
-{$ENDIF}
-end;
-
-procedure TForm15Puzzle.StopBlinkShuffle;
-begin
-  ShuffleGloomEffectAni.Enabled := false;
-  ShuffleGloomEffect.BaseIntensity := 0.5;
-  ShuffleGloomEffect.BaseSaturation := 0.5;
-  ShuffleGloomEffect.GloomIntensity := 0.5;
-  ShuffleGloomEffect.GloomSaturation := 0.05;
-
-{$IF defined(ANDROID)}
-  ShuffleFillColorAni.Enabled := false;
-
-  ButtonShuffle.Fill.Color := ShuffleFillColorAniMouseOver.StartValue;
-  ButtonShuffle.Stroke.Color := ShuffleStrokeColorAni.StartValue;
-{$ENDIF}
-end;
 
 procedure TForm15Puzzle.SetMaxTime;
 var
@@ -597,12 +550,28 @@ begin
 end;
 
 
-procedure TForm15Puzzle.TimerReShuffleTimer(Sender: TObject);
-begin
-  TimerReShuffle.Enabled := false;
-  ButtonShuffleClick(TimerReShuffle);
-end;
 
+procedure TForm15Puzzle.TimerTimeTimer(Sender: TObject);
+var
+  Min, Sec: Word;
+begin
+  TextTime.Tag := TextTime.Tag - 1;
+  DivMod(TextTime.Tag, 60, Min, Sec);
+  TextTime.Text := Format('%d:%.2d', [Min, Sec]);
+
+  if (TextTime.Tag = 0) then
+  begin
+    Mode := GameOver;
+
+    AnimateTimeOver;
+    StartBlinkShuffle;
+
+    exit;
+  end;
+
+  if (TextTime.Tag <= 10) then
+    AnimateTimeRunningOut;
+end;
 
 
 
@@ -618,23 +587,57 @@ end;
 procedure TForm15Puzzle.TimerResizeTimer(Sender: TObject);
 var
   TimeFromLastResize_ms: Extended;
-//Hour, Min, Sec, MSec: Word;
 begin
   TimerResize.Enabled := false;
 
-//  DecodeTime(Time - LastResizeTime, Hour, Min, Sec, MSec);
-//  TimeFromLastResize_ms := Sec * 1000 + MSec;
   TimeFromLastResize_ms := (Time - LastResizeTime) * SecsPerDay * 1000;
 
   if TimeFromLastResize_ms > 500 then
   begin
-//    LabelResize.Tag := LabelResize.Tag + 1;
-//    LabelResize.Text := 'R' + IntToStr(LabelResize.Tag);
     AnimatePlaceTilesFast;
     LastResizeTime := Time;
   end;
 
 end;
+
+
+
+
+
+
+procedure TForm15Puzzle.FormKeyUp(Sender: TObject; var Key: Word;
+  var KeyChar: Char; Shift: TShiftState);
+begin
+  if Key = vkHardwareBack then
+  begin
+    Key := 0;
+    Close;
+  end;
+
+end;
+
+procedure TForm15Puzzle.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  if not ClosingAnimation then
+  begin
+    AnimateTilesDisappeare;
+    ClosingAnimation := true;
+    TimerClose.Interval := 520 + 30 * Length(Tiles);
+    TimerClose.Enabled := true;
+
+    Action := TCloseAction.caNone;
+  end;
+end;
+
+procedure TForm15Puzzle.TimerCloseTimer(Sender: TObject);
+begin
+  Close;
+end;
+
+
+//-------------------------------   Animations   -----------------------------
+
+
 
 procedure TForm15Puzzle.CalcConsts;
 begin
@@ -657,8 +660,9 @@ begin
 
   SpaceX := SpaceX + Round(TileSpacing / 2);
   SpaceY := SpaceY + Round(TileSpacing / 2);
-
 end;
+
+
 
 var slowdown: double = 1;
 
@@ -674,6 +678,9 @@ begin
 
   LabelSpeed.Text := 'Speed'#9'1/' + FloatToStr(slowdown);
 end;
+
+
+
 
 procedure TForm15Puzzle.AnimatePlaceTilesSlow;
 var
@@ -702,9 +709,6 @@ begin
     end;
 
 end;
-
-
-
 
 
 
@@ -738,7 +742,24 @@ begin
 end;
 
 
+
 procedure TForm15Puzzle.AnimateBaseNotChanged;
+begin
+  case ButtonBaseNotChanged.Tag mod 2 of
+  0: AnimateBaseNotChanged1;
+  1: AnimateBaseNotChanged2;
+  else
+    begin
+      AnimatePrepareBeforePlace;
+      AnimatePlaceTilesFast;
+    end;
+  end;
+
+  ButtonBaseNotChanged.Tag := ButtonBaseNotChanged.Tag + 1;
+end;
+
+
+procedure TForm15Puzzle.AnimateBaseNotChanged1;
 var
   i : Integer;
 begin
@@ -754,9 +775,50 @@ begin
       TAnimator.AnimateFloatDelay(Tiles[i], 'RotationAngle', 0, 0.25 * slowdown, 0.35 * slowdown,
         TAnimationType.Out, TInterpolationType.Back  );
     end;
-
 end;
 
+
+procedure TForm15Puzzle.AnimateBaseNotChanged2;
+var
+  i, X, Y: Integer;
+  Row, Col: Word;
+  OrigScaleX, OrigScaleY: Extended;
+  Offset: Extended;
+  OrigPosition: TPosition;
+begin
+  for i := 0 to Length(Tiles) - 1 do
+    if (Tiles[i] <> nil) then
+    begin
+      OrigPosition := Tiles[i].Position;
+      OrigScaleX := Tiles[i].Scale.X;
+      OrigScaleY := Tiles[i].Scale.Y;
+
+      DivMod(i, Base, Row, Col);
+
+      Offset := (Tiles[i].Width * Tiles[i].Scale.X) / 4 ;
+
+      X := Round(OrigPosition.X + Offset);
+      Y := Round(OrigPosition.Y + Offset);
+
+      TAnimator.AnimateFloatDelay(Tiles[i], 'Scale.X', OrigScaleX / 2, 0.3 * slowdown,
+        (0 + 0.03 * i) * slowdown, TAnimationType.In, TInterpolationType.Back);
+      TAnimator.AnimateFloatDelay(Tiles[i], 'Scale.Y', OrigScaleY / 2, 0.3 * slowdown,
+        (0 + 0.03 * i) * slowdown, TAnimationType.In, TInterpolationType.Back);
+      TAnimator.AnimateFloatDelay(Tiles[i], 'Position.X', X, 0.3 * slowdown,
+        (0 + 0.03 * i) * slowdown, TAnimationType.In, TInterpolationType.Back);
+      TAnimator.AnimateFloatDelay(Tiles[i], 'Position.Y', Y, 0.3 * slowdown,
+        (0 + 0.03 * i) * slowdown, TAnimationType.In, TInterpolationType.Back);
+
+      TAnimator.AnimateFloatDelay(Tiles[i], 'Scale.X', OrigScaleX, 0.3 * slowdown,
+        (0.35 + 0.03 * i) * slowdown, TAnimationType.Out, TInterpolationType.Back);
+      TAnimator.AnimateFloatDelay(Tiles[i], 'Scale.Y', OrigScaleY, 0.3 * slowdown,
+        (0.35 + 0.03 * i) * slowdown, TAnimationType.Out, TInterpolationType.Back);
+      TAnimator.AnimateFloatDelay(Tiles[i], 'Position.X', OrigPosition.X, 0.3 * slowdown,
+        (0.35 + 0.03 * i) * slowdown, TAnimationType.Out, TInterpolationType.Back);
+      TAnimator.AnimateFloatDelay(Tiles[i], 'Position.Y', OrigPosition.Y, 0.3 * slowdown,
+        (0.35 + 0.03 * i) * slowdown, TAnimationType.Out, TInterpolationType.Back);
+    end;
+end;
 
 
 
@@ -884,7 +946,7 @@ begin
       GradientAni.StopValue.Color1 := TileFillNormalColor1;
 
       GradientAni.Delay := 0;
-      GradientAni.Duration := 0.2;
+      GradientAni.Duration := 0.5;
       GradientAni.AutoReverse := false;
 
       GradientAni.Start;
@@ -927,7 +989,35 @@ begin
 
 end;
 
+procedure TForm15Puzzle.StartBlinkShuffle;
+begin
+  ShuffleGloomEffect.BaseIntensity := 1;
+  ShuffleGloomEffect.BaseSaturation := 1;
+  ShuffleGloomEffect.GloomIntensity := 0;
+  ShuffleGloomEffect.GloomSaturation := 0;
+  ShuffleGloomEffectAni.Enabled := true;
 
+{$IF defined(ANDROID)}
+  ButtonShuffle.Stroke.Color := ShuffleStrokeColorAni.StopValue;
+  ShuffleFillColorAni.Enabled := true;
+{$ENDIF}
+end;
+
+procedure TForm15Puzzle.StopBlinkShuffle;
+begin
+  ShuffleGloomEffectAni.Enabled := false;
+  ShuffleGloomEffect.BaseIntensity := 0.5;
+  ShuffleGloomEffect.BaseSaturation := 0.5;
+  ShuffleGloomEffect.GloomIntensity := 0.5;
+  ShuffleGloomEffect.GloomSaturation := 0.05;
+
+{$IF defined(ANDROID)}
+  ShuffleFillColorAni.Enabled := false;
+
+  ButtonShuffle.Fill.Color := ShuffleFillColorAniMouseOver.StartValue;
+  ButtonShuffle.Stroke.Color := ShuffleStrokeColorAni.StartValue;
+{$ENDIF}
+end;
 
 
 procedure TForm15Puzzle.ButtonMenuClick(Sender: TObject);
@@ -981,65 +1071,8 @@ begin
 end;
 
 
-procedure TForm15Puzzle.TimerTimeTimer(Sender: TObject);
-var
-  Min, Sec: Word;
-begin
-  TextTime.Tag := TextTime.Tag - 1;
-  DivMod(TextTime.Tag, 60, Min, Sec);
-  TextTime.Text := Format('%d:%.2d', [Min, Sec]);
 
-  if (TextTime.Tag = 0) then
-  begin
-    Mode := GameOver;
-
-    AnimateTimeOver;
-    StartBlinkShuffle;
-
-    exit;
-  end;
-
-  if (TextTime.Tag <= 10) then
-    AnimateTimeRunningOut;
-end;
-
-
-
-
-procedure TForm15Puzzle.ButtonCloseClick(Sender: TObject);
-begin
-  Close;
-end;
-
-procedure TForm15Puzzle.FormKeyUp(Sender: TObject; var Key: Word;
-  var KeyChar: Char; Shift: TShiftState);
-begin
-  if Key = vkHardwareBack then
-  begin
-    Key := 0;
-    Close;
-  end;
-
-end;
-
-procedure TForm15Puzzle.FormClose(Sender: TObject; var Action: TCloseAction);
-begin
-  if not ClosingAnimation then
-  begin
-    AnimateTilesDisappeare;
-    ClosingAnimation := true;
-    TimerClose.Interval := 520 + 30 * Length(Tiles);
-    TimerClose.Enabled := true;
-
-    Action := TCloseAction.caNone;
-  end;
-end;
-
-procedure TForm15Puzzle.TimerCloseTimer(Sender: TObject);
-begin
-  Close;
-end;
-
+//-------------------------------  Test different Animations   -----------------------------
 
 
 procedure TForm15Puzzle.ButtonDisappeareClick(Sender: TObject);
@@ -1051,6 +1084,8 @@ begin
   end;
   AnimateTilesDisappeare;
 end;
+
+
 
 procedure TForm15Puzzle.ButtonPlaceClick(Sender: TObject);
 begin
@@ -1107,6 +1142,15 @@ begin
 end;
 
 
-
+procedure TForm15Puzzle.ButtonFontClick(Sender: TObject);
+//var
+//  i : Integer;
+begin
+//  for i := 0 to Length(Tiles) - 1 do
+//    if (Tiles[i] <> nil) then
+//    begin
+//      (Tiles[i].Children[0] as TText).Font.Family := EditFont.Text;
+//    end;
+end;
 
 end.
