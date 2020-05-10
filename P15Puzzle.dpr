@@ -1,4 +1,4 @@
-program P15Pazzle;
+program P15Puzzle;
 
 uses
   System.StartUpCopy,
