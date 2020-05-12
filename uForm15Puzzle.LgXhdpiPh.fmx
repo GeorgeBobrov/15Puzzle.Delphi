@@ -1,0 +1,64 @@
+inherited Form15Puzzle_LgXhdpiPh: TForm15Puzzle_LgXhdpiPh
+  ClientHeight = 695
+  ClientWidth = 450
+  DesignerMasterStyle = 0
+  inherited PanelClient: TPanel
+    Size.Width = 450.000000000000000000
+    Size.Height = 655.000000000000000000
+    inherited Tile1: TRectangle
+      Size.Width = 120.000000000000000000
+      Size.Height = 120.000000000000000000
+      Stroke.Thickness = 6.000000000000000000
+      inherited TileText: TText
+        Size.Width = 120.000000000000000000
+        Size.Height = 120.000000000000000000
+        TextSettings.Font.Size = 50.000000000000000000
+      end
+    end
+  end
+  inherited PanelTop: TRectangle
+    Size.Width = 450.000000000000000000
+    inherited LayoutCenter: TLayout
+      Size.Width = 331.000000000000000000
+    end
+    inherited ButtonMenu: TRectangle
+      Position.X = 394.000000000000000000
+      inherited ImageMenu: TImage
+        MultiResBitmap = <
+          item
+            Width = 24
+            Height = 24
+            PNG = {
+              89504E470D0A1A0A0000000D4948445200000018000000180806000000E0773D
+              F8000000017352474200AECE1CE90000000467414D410000B18F0BFC61050000
+              011D49444154484B63185EC0BBF09134944935C008A5C1C02FFF99DD7F2686D8
+              3F8CDF03FF7EFCCCC5C0C00295C10DB87819399918FF323032B37EF8FD8F6FE3
+              BF3FFF366F9924BB162A8D6A4160D9CB9977185F27EBB008323331FC07CA3241
+              65F0837FFFFF30FCFFCFC8C0CEC5F68B898177DFFC1A2E4FA81403AA09FFFEB3
+              AB318A3DE0E3136010101265E01710228805048519F8F98519787905800EE2FF
+              C4C0C4086420008A0FFCF39F18B073B2684B4909F4B3BFBD2BF41BCD7EAC4054
+              9D9999F11FC3B77F3F3FBF7AF279CACFDF7F566FEA93390F9545B5C023F7163B
+              8B1037B39A9414173B0BD0CF5FA012F800E32F61067606869F0CEC6FAE5DB9FD
+              99F785EA9FD5AB819132206034990ECF643ACCC068321D4DA623123030000044
+              69C7DFF420E3510000000049454E44AE426082}
+          end>
+      end
+    end
+  end
+  inherited PanelDebug: TPanel
+    Size.Width = 450.000000000000000000
+    inherited TrackBarSlowdown: TTrackBar
+      Position.Y = 59.000000000000000000
+      Size.Height = 32.000000000000000000
+    end
+    inherited LabelSpeed: TLabel
+      StyledSettings = [Family, Style, FontColor]
+    end
+  end
+  inherited PanelMenu: TRectangle
+    Size.Width = 450.000000000000000000
+    inherited GridPanelLayout1: TGridPanelLayout
+      Size.Width = 450.000000000000000000
+    end
+  end
+end

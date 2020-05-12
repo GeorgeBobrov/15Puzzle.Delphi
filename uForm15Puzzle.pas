@@ -6,7 +6,8 @@ uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.StdCtrls,
   FMX.Layouts, FMX.Objects, FMX.Effects, FMX.Filter.Effects, FMX.Ani, Math,
-  FMX.Controls.Presentation, FMX.ListBox, FMX.ScrollBox, FMX.Memo, FMX.Edit;
+  FMX.Controls.Presentation, FMX.ListBox, FMX.ScrollBox, FMX.Memo, FMX.Edit,
+  System.Generics.Collections;
 
 type
   TForm15Puzzle = class(TForm)
@@ -51,7 +52,6 @@ type
     PanelDebug: TPanel;
     ButtonTimeRunningOut: TButton;
     ButtonBaseNotChanged: TButton;
-    TimerClose: TTimer;
     ButtonPuzzleMatched: TButton;
     ButtonTimeOver: TButton;
     PanelDebugAnimation: TFloatAnimation;
@@ -75,16 +75,13 @@ type
     procedure ButtonTimeRunningOutClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure ButtonBaseNotChangedClick(Sender: TObject);
-    procedure TimerCloseTimer(Sender: TObject);
     procedure ButtonPuzzleMatchedClick(Sender: TObject);
     procedure ButtonTimeOverClick(Sender: TObject);
-    procedure ComboBoxQualityChange(Sender: TObject);
     procedure FormKeyUp(Sender: TObject; var Key: Word; var KeyChar: Char;
       Shift: TShiftState);
     procedure TrackBarSlowdownChange(Sender: TObject);
     procedure ShowDebug(Sender: TObject);
     procedure PanelTopTap(Sender: TObject; const Point: TPointF);
-    procedure ButtonFontClick(Sender: TObject);
     type
       TMode = (Game, GameOver, JustShuffled, PuzzleMatched);
   private
@@ -136,6 +133,11 @@ type
 
 var
   Form15Puzzle: TForm15Puzzle;
+
+function AnimateFloatDelayEx(const Target: TFmxObject; const APropertyName: string; const NewValue: Single;
+  Duration: Single = 0.2; Delay: Single = 0.0; AType: TAnimationType = TAnimationType.In;
+  AInterpolation: TInterpolationType = TInterpolationType.Linear;
+  DeleteWhenStopped: boolean = true; WaitAnimationEnd: boolean = false): TFloatAnimation;
 
 implementation
 
@@ -211,10 +213,7 @@ begin
   FBase := Value;
   SetMaxTime;
 
-  if Length(Tiles) > 0 then
-    TimerCreateTiles.Interval := (520 + 30 * Length(Tiles)) {$IF defined(ANDROID)} * 2  {$ENDIF}
-  else
-    TimerCreateTiles.Interval := 50;
+  TimerCreateTiles.Interval := 100;
   TimerCreateTiles.Enabled := true;
 end;
 
@@ -449,7 +448,7 @@ begin
   end;
 
 
-  if (not LPuzzleMatched) and ((Mode = PuzzleMatched) or (Mode = JustShuffled)) then
+  if (not LPuzzleMatched) and (Mode = PuzzleMatched) then
   begin
     AnimateNormalizeTilesColor;
 
@@ -622,17 +621,10 @@ begin
   begin
     AnimateTilesDisappeare;
     ClosingAnimation := true;
-    TimerClose.Interval := 520 + 30 * Length(Tiles);
-    TimerClose.Enabled := true;
-
-    Action := TCloseAction.caNone;
   end;
 end;
 
-procedure TForm15Puzzle.TimerCloseTimer(Sender: TObject);
-begin
-  Close;
-end;
+
 
 
 //-------------------------------   Animations   -----------------------------
@@ -825,19 +817,56 @@ end;
 procedure TForm15Puzzle.AnimateTilesDisappeare;
 var
   i: Integer;
+  AniList: TList<TFloatAnimation>;
+  SomeAniRunning: boolean;
+  Animation: TFloatAnimation;
 begin
+  AniList := TList<TFloatAnimation>.Create;
+
   for i := 0 to Length(Tiles) - 1 do
     if (Tiles[i] <> nil) then
     begin
       TAnimator.AnimateFloatDelay(Tiles[i], 'Scale.X', 0.1, 0.4 * slowdown, (0.03 * i) * slowdown);
       TAnimator.AnimateFloatDelay(Tiles[i], 'Scale.Y', 0.1, 0.4 * slowdown, (0.03 * i) * slowdown);
-      TAnimator.AnimateFloatDelay(Tiles[i], 'RotationAngle', 45, 0.4 * slowdown, (0.03 * i) * slowdown);
+
+      Animation := AnimateFloatDelayEx(Tiles[i], 'RotationAngle', 45,
+        0.4 * slowdown, (0.03 * i) * slowdown,
+        TAnimationType.In,  TInterpolationType.Linear, {DeleteWhenStopped} false);
+
+      AniList.Add(Animation);
+
       TAnimator.AnimateFloatDelay(Tiles[i], 'Position.Y', Tiles[i].Position.Y + TileSize,
         0.4 * slowdown, (0.03 * i) * slowdown, TAnimationType.In, TInterpolationType.Back);
       TAnimator.AnimateFloatDelay(Tiles[i], 'Position.X',
         Tiles[i].Position.X + Round(TileSize / 2), 0.4 * slowdown, (0.03 * i) * slowdown);
-      TAnimator.AnimateFloatDelay(Tiles[i], 'Opacity', 0, 0.4 * slowdown, (0.1 + 0.03 * i) * slowdown);
+
+      Animation := AnimateFloatDelayEx(Tiles[i], 'Opacity', 0,
+        0.4 * slowdown, (0.1 + 0.03 * i) * slowdown,
+        TAnimationType.In,  TInterpolationType.Linear, {DeleteWhenStopped} false);
+
+      AniList.Add(Animation);
     end;
+
+//Wait end of all animations;
+  repeat
+    SomeAniRunning := false;
+
+    for Animation in AniList do
+      if (Animation.Running) then
+        SomeAniRunning := true;
+
+    if SomeAniRunning then
+    begin
+      Application.ProcessMessages;
+      Sleep(0);
+    end
+    else
+      break;
+
+  until false;
+
+    for Animation in AniList do
+      Animation.DisposeOf;
 end;
 
 
@@ -1127,11 +1156,67 @@ begin
     GreenTiles := false;
   end;
   AnimateBaseNotChanged;
+
 end;
 
 
-procedure TForm15Puzzle.ComboBoxQualityChange(Sender: TObject);
+//---------------------------  Realization of Property Animation   -----------------------------
+type
+  TAnimationDestroyer = class
+  private
+    procedure DoAniFinished(Sender: TObject);
+  end;
+
+procedure TAnimationDestroyer.DoAniFinished(Sender: TObject);
 begin
+  TThread.ForceQueue(nil, procedure begin
+    TAnimation(Sender).DisposeOf;
+  end);
+end;
+
+var
+  FDestroyer: TAnimationDestroyer;
+
+// Based on FMX.Ani.TAnimator.AnimateFloatDelay
+
+function AnimateFloatDelayEx(const Target: TFmxObject; const APropertyName: string; const NewValue: Single;
+  Duration: Single = 0.2; Delay: Single = 0.0; AType: TAnimationType = TAnimationType.In;
+  AInterpolation: TInterpolationType = TInterpolationType.Linear;
+  DeleteWhenStopped: boolean = true; WaitAnimationEnd: boolean = false): TFloatAnimation;
+var
+  Animation: TFloatAnimation;
+begin
+  if FDestroyer = nil then
+    FDestroyer := TAnimationDestroyer.Create;
+
+  Animation := TFloatAnimation.Create(nil);
+  Animation.Parent := Target;
+  Animation.AnimationType := AType;
+  Animation.Interpolation := AInterpolation;
+  Animation.Delay := Delay;
+  Animation.Duration := Duration;
+  Animation.PropertyName := APropertyName;
+  Animation.StartFromCurrent := True;
+
+  if (DeleteWhenStopped) then
+    Animation.OnFinish := FDestroyer.DoAniFinished;
+
+  Animation.StopValue := NewValue;
+  Animation.Start;
+
+  if (WaitAnimationEnd) then
+    while Animation.Running do
+    begin
+      Application.ProcessMessages;
+      Sleep(0);
+    end;
+
+  Result := Animation;
+end;
+
+
+//procedure TForm15Puzzle.ComboBoxQualityChange(Sender: TObject);
+//begin
 //  Quality := TCanvasQuality(ComboBoxQuality.ItemIndex);
 
 //  case Quality of
@@ -1139,18 +1224,18 @@ begin
 //    TCanvasQuality.HighPerformance: LabelQuality.Text := 'HighPerformance';
 //    TCanvasQuality.HighQuality:     LabelQuality.Text := 'HighQuality';
 //  end;
-end;
+//end;
 
 
-procedure TForm15Puzzle.ButtonFontClick(Sender: TObject);
+//procedure TForm15Puzzle.ButtonFontClick(Sender: TObject);
 //var
 //  i : Integer;
-begin
+//begin
 //  for i := 0 to Length(Tiles) - 1 do
 //    if (Tiles[i] <> nil) then
 //    begin
 //      (Tiles[i].Children[0] as TText).Font.Family := EditFont.Text;
 //    end;
-end;
+//end;
 
 end.

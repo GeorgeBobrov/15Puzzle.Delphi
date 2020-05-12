@@ -1,0 +1,7 @@
+__history
+Android
+Win32
+*.dproj.local
+*.identcache
+AndroidManifest*
+
