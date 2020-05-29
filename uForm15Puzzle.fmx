@@ -25,7 +25,7 @@ object Form15Puzzle: TForm15Puzzle
       Fill.Gradient.Points = <
         item
           Color = xFFABE024
-          Offset = 0.086816720664501180
+          Offset = 0.086816720664501190
         end
         item
           Color = claBisque
@@ -61,7 +61,7 @@ object Form15Puzzle: TForm15Puzzle
         TextSettings.Font.Size = 15.000000000000000000
       end
       object TileGradientAni: TGradientAnimation
-        Duration = 0.400000005960464400
+        Duration = 0.400000005960464500
         PropertyName = 'Fill.Gradient'
         StartValue.Points = <
           item
@@ -171,7 +171,7 @@ object Form15Puzzle: TForm15Puzzle
           BaseSaturation = 0.500000000000000000
           object ShuffleGloomEffectAni: TFloatAnimation
             AutoReverse = True
-            Duration = 0.800000011920928900
+            Duration = 0.800000011920929000
             Loop = True
             PropertyName = 'BaseIntensity'
             StartValue = 1.000000000000000000
@@ -180,7 +180,7 @@ object Form15Puzzle: TForm15Puzzle
         end
         object ShuffleFillColorAni: TColorAnimation
           AutoReverse = True
-          Duration = 0.800000011920928900
+          Duration = 0.800000011920929000
           Loop = True
           PropertyName = 'Fill.Color'
           StartValue = claAliceblue
@@ -217,16 +217,16 @@ object Form15Puzzle: TForm15Puzzle
             PNG = {
               89504E470D0A1A0A0000000D4948445200000018000000180806000000E0773D
               F8000000017352474200AECE1CE90000000467414D410000B18F0BFC61050000
-              011D49444154484B63185EC0BBF09134944935C008A5C1C02FFF99DD7F2686D8
+              011C49444154484B63185EC0BBF09134944935C008A5C1C02FFF99DD7F2686D8
               3F8CDF03FF7EFCCCC5C0C00295C10DB87819399918FF323032B37EF8FD8F6FE3
-              BF3FFF366F9924BB162A8D6A4160D9CB99B7195F27EBB208323331FC07CA3241
+              BF3FFF366F9924BB162A8D6A4160D9CB99B7185F27EBB108323331FC07CA3241
               65F0837FFFFF30FCFFCFC8C0CEC5F68B898177DFFC1A2E4FA81403AA09FFFEB3
-              AB338A3DE0E3136010101265E01710228805048519F8F98519787905800EE2FF
-              C4C0C4086420008A0FFCF39F18B073B2684B4909F4B3BFBD23F41BCD7EAC4054
-              839999F11FC3B77F3F3FBF7AF279CACFDF7F566FEA93390F9545B5C023F7163B
-              8B1037B39A9414173B0BD0CF5FA012F800E32F61067606869F0CEC6FAE5DB9FD
-              99F785EA9FD5AB819132206034990ECF643ACCC068321D4DA623123030000051
-              56C7E231BA555E0000000049454E44AE426082}
+              6B308A3DE0E3136010101265E01710228805048519F8F98519787905800EE2FF
+              C4C0C4086420008A0FFCF39F18B073B2684B4909F4B3BFBD23F41B551A3B10D5
+              646666FCC7F0EDDFCFCFAF9E7C9EF2F3F79FD59BFA64CE4365514DF0C8BDC5CE
+              22C4CDAC2625C5C5CE02F4F317A8043EC0F84B98819D81E12703FB9B6B576E7F
+              E67DA1FA67F56A60A40C08184DA6C333990E33309A4C4793E988040C0C005E4F
+              C7E5F98E227E0000000049454E44AE426082}
           end>
         Align = Client
         HitTest = False
@@ -253,7 +253,7 @@ object Form15Puzzle: TForm15Puzzle
         BaseSaturation = 0.500000000000000000
         object ButtonMenuGloomAni: TFloatAnimation
           AutoReverse = True
-          Duration = 0.800000011920928900
+          Duration = 0.800000011920929000
           Loop = True
           PropertyName = 'BaseIntensity'
           StartValue = 1.000000000000000000
@@ -389,7 +389,7 @@ object Form15Puzzle: TForm15Puzzle
     end
     object PanelDebugAnimation: TFloatAnimation
       AnimationType = Out
-      Duration = 0.400000005960464400
+      Duration = 0.400000005960464500
       Interpolation = Back
       PropertyName = 'Height'
       StartValue = 0.000000000000000000
@@ -433,7 +433,7 @@ object Form15Puzzle: TForm15Puzzle
     YRadius = 3.000000000000000000
     object PanelMenuAnimation: TFloatAnimation
       AnimationType = Out
-      Duration = 0.400000005960464400
+      Duration = 0.400000005960464500
       Interpolation = Back
       Inverse = True
       PropertyName = 'Height'

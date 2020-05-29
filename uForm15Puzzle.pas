@@ -238,8 +238,8 @@ begin
 //  Tile1.Position.X := Self.Width - Tile1.Width - 10;
 //  Tile1.Position.Y := Self.Height - Tile1.Height - 10;
 
-  Tile1.Tag := 0;          //Position of Tile in flat array, see ind()
-  Tile1.TagFloat := 0;     //Actual number of Tile
+  Tile1.Tag := 0;          //Actual Position of Tile in flat array, see ind()
+  Tile1.TagFloat := 0;     //Text number on Tile
 
   Tile1.Opacity := 0;
   Tile1.Visible := true;
@@ -319,6 +319,15 @@ var
   Row, Col, RowNoTile, ColNoTile, RowToMove, ColToMove: integer;
   WasMoved: Boolean;
   NewPosition: integer;
+
+procedure MoveTile(OldPosition: integer; NewPosition: integer);
+begin
+	Tiles[NewPosition] := Tiles[OldPosition];
+	Tiles[OldPosition] := nil;
+  Tiles[NewPosition].Tag := NewPosition;
+	AnimateMoveTile( Tiles[NewPosition], MoveAniDuration );
+end;
+
 begin
   DivMod(TilePosition, Base, RowPressed, ColPressed);
 
@@ -331,26 +340,14 @@ begin
       if (RowNoTile > RowPressed) then
         for RowToMove := RowNoTile - 1 downto RowPressed do
         begin
-          NewPosition := ind(RowToMove + 1 , ColPressed);
-          Tiles[NewPosition] := Tiles[ind(RowToMove , ColPressed)];
-          Tiles[NewPosition].Tag := NewPosition;
-          Tiles[ind(RowToMove , ColPressed)] := nil;
-
-          AnimateMoveTile(Tiles[NewPosition], MoveAniDuration);
-
+					MoveTile(ind( RowToMove, ColPressed ), ind( RowToMove + 1, ColPressed ));
           WasMoved := true;
         end;
 
       if (RowPressed > RowNoTile) then
         for RowToMove := RowNoTile + 1 to RowPressed do
         begin
-          NewPosition := ind(RowToMove - 1 , ColPressed);
-          Tiles[NewPosition] := Tiles[ind(RowToMove , ColPressed)];
-          Tiles[NewPosition].Tag := NewPosition;
-          Tiles[ind(RowToMove , ColPressed)] := nil;
-
-          AnimateMoveTile(Tiles[NewPosition], MoveAniDuration);
-
+					MoveTile(ind( RowToMove, ColPressed ), ind( RowToMove - 1, ColPressed ));
           WasMoved := true;
         end;
 
@@ -365,26 +362,14 @@ begin
       if (ColNoTile > ColPressed) then
         for ColToMove := ColNoTile - 1 downto ColPressed do
         begin
-          NewPosition := ind(RowPressed , ColToMove + 1);
-          Tiles[NewPosition] := Tiles[ind(RowPressed , ColToMove)];
-          Tiles[NewPosition].Tag := NewPosition;
-          Tiles[ind(RowPressed , ColToMove)] := nil;
-
-          AnimateMoveTile(Tiles[NewPosition], MoveAniDuration);
-
+					MoveTile(ind( RowPressed, ColToMove ), ind( RowPressed, ColToMove + 1 ));
           WasMoved := true;
         end;
 
       if (ColPressed > ColNoTile) then
         for ColToMove := ColNoTile + 1 to ColPressed do
         begin
-          NewPosition := ind(RowPressed , ColToMove - 1);
-          Tiles[NewPosition] := Tiles[ind(RowPressed , ColToMove)];
-          Tiles[NewPosition].Tag := NewPosition;
-          Tiles[ind(RowPressed , ColToMove)] := nil;
-
-          AnimateMoveTile(Tiles[NewPosition], MoveAniDuration);
-
+					MoveTile(ind( RowPressed, ColToMove ), ind( RowPressed, ColToMove - 1 ));
           WasMoved := true;
         end;
 
