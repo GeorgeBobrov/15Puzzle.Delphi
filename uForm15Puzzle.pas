@@ -239,7 +239,7 @@ begin
 //  Tile1.Position.Y := Self.Height - Tile1.Height - 10;
 
   Tile1.Tag := 0;          //Actual Position of Tile in flat array, see ind()
-  Tile1.TagFloat := 0;     //Text number on Tile
+  Tile1.TagFloat := 0;     //Position at creation time = Text number on Tile - 1
 
   Tile1.Opacity := 0;
   Tile1.Visible := true;
@@ -337,17 +337,17 @@ begin
     begin
       RowNoTile := Row;
 
-      if (RowNoTile > RowPressed) then
+      if (RowNoTile > RowPressed) then // Move tiles down
         for RowToMove := RowNoTile - 1 downto RowPressed do
         begin
-					MoveTile(ind( RowToMove, ColPressed ), ind( RowToMove + 1, ColPressed ));
+          MoveTile(ind( RowToMove, ColPressed ), ind( RowToMove + 1, ColPressed ));
           WasMoved := true;
         end;
 
-      if (RowPressed > RowNoTile) then
+      if (RowPressed > RowNoTile) then // Move tiles up
         for RowToMove := RowNoTile + 1 to RowPressed do
         begin
-					MoveTile(ind( RowToMove, ColPressed ), ind( RowToMove - 1, ColPressed ));
+          MoveTile(ind( RowToMove, ColPressed ), ind( RowToMove - 1, ColPressed ));
           WasMoved := true;
         end;
 
@@ -359,17 +359,17 @@ begin
     begin
       ColNoTile := Col;
 
-      if (ColNoTile > ColPressed) then
+      if (ColNoTile > ColPressed) then // Move tiles right
         for ColToMove := ColNoTile - 1 downto ColPressed do
         begin
-					MoveTile(ind( RowPressed, ColToMove ), ind( RowPressed, ColToMove + 1 ));
+          MoveTile(ind( RowPressed, ColToMove ), ind( RowPressed, ColToMove + 1 ));
           WasMoved := true;
         end;
 
-      if (ColPressed > ColNoTile) then
+      if (ColPressed > ColNoTile) then // Move tiles left
         for ColToMove := ColNoTile + 1 to ColPressed do
         begin
-					MoveTile(ind( RowPressed, ColToMove ), ind( RowPressed, ColToMove - 1 ));
+          MoveTile(ind( RowPressed, ColToMove ), ind( RowPressed, ColToMove - 1 ));
           WasMoved := true;
         end;
 

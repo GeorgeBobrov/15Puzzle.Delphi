@@ -1,7 +1,10 @@
 __history
 Android
 Win32
-*.dproj.local
+*.local
 *.identcache
 AndroidManifest*
+*.res
+*.deployproj
+*.stat
 
