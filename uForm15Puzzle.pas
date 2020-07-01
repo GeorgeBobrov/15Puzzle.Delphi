@@ -81,7 +81,7 @@ type
       Shift: TShiftState);
     procedure TrackBarSlowdownChange(Sender: TObject);
     procedure ShowDebug(Sender: TObject);
-    procedure PanelTopTap(Sender: TObject; const Point: TPointF);
+    procedure PanelClientClick(Sender: TObject);
     type
       TMode = (Game, GameOver, JustShuffled, PuzzleMatched);
   private
@@ -103,7 +103,6 @@ type
     LastResizeTime: TDateTime;
     ClosingAnimation: Boolean;
     WaitAnimationEnd: Boolean;
-    GreenTiles: Boolean;
 
     property Base: integer read FBase write SetBase;
     property Mode: TMode read FMode write SetMode;
@@ -172,6 +171,8 @@ begin
 
   TileFillNormalColor := Tile1.Fill.Gradient.InterpolateColor(0);
   TileFillNormalColor1 := Tile1.Fill.Gradient.InterpolateColor(1);
+
+  PanelClient.BringToFront;
 
   Base := 4;
 end;
@@ -321,9 +322,12 @@ var
   NewPosition: integer;
 
 procedure MoveTile(OldPosition: integer; NewPosition: integer);
+var temp: TRectangle;
 begin
+	temp := Tiles[NewPosition];
 	Tiles[NewPosition] := Tiles[OldPosition];
-	Tiles[OldPosition] := nil;
+	Tiles[OldPosition] := temp;
+
   Tiles[NewPosition].Tag := NewPosition;
 	AnimateMoveTile( Tiles[NewPosition], MoveAniDuration );
 end;
@@ -559,11 +563,15 @@ end;
 
 
 
+
+
 procedure TForm15Puzzle.PanelClientResize(Sender: TObject);
 begin
     TimerResize.Enabled := false;
     TimerResize.Enabled := true;
 end;
+
+
 
 
 
@@ -1033,6 +1041,7 @@ begin
 {$ENDIF}
 end;
 
+//-----------------------------   -----------------------------	-----------------------------
 
 procedure TForm15Puzzle.ButtonMenuClick(Sender: TObject);
 begin
@@ -1052,7 +1061,7 @@ end;
 
 
 
-procedure TForm15Puzzle.PanelTopTap(Sender: TObject; const Point: TPointF);
+procedure TForm15Puzzle.PanelClientClick(Sender: TObject);
 var
   TimeFromLastTap_ms: Extended;
 begin
@@ -1077,7 +1086,6 @@ begin
   if (PanelDebug.Height = 0) then
     PanelDebug.Position.Y := PanelMenu.Position.Y + 100;
 
-
   PanelDebugAnimation.Inverse := (PanelDebug.Height = PanelDebugAnimation.StopValue);
 //  SpeedButtonEffects.IsPressed := not PanelDebugAnimation.Inverse;
 
@@ -1091,11 +1099,6 @@ end;
 
 procedure TForm15Puzzle.ButtonDisappeareClick(Sender: TObject);
 begin
-  if GreenTiles then
-  begin
-    AnimateNormalizeTilesColor;
-    GreenTiles := false;
-  end;
   AnimateTilesDisappeare;
 end;
 
@@ -1103,11 +1106,7 @@ end;
 
 procedure TForm15Puzzle.ButtonPlaceClick(Sender: TObject);
 begin
-  if GreenTiles then
-  begin
-    AnimateNormalizeTilesColor;
-    GreenTiles := false;
-  end;
+  AnimateNormalizeTilesColor;
   AnimatePrepareBeforePlace;
   AnimatePlaceTilesFast;
 end;
@@ -1125,7 +1124,6 @@ end;
 
 procedure TForm15Puzzle.ButtonPuzzleMatchedClick(Sender: TObject);
 begin
-  GreenTiles := true;
   AnimatePuzzleMatched;
 end;
 
@@ -1135,13 +1133,7 @@ end;
 
 procedure TForm15Puzzle.ButtonBaseNotChangedClick(Sender: TObject);
 begin
-  if GreenTiles then
-  begin
-    AnimateNormalizeTilesColor;
-    GreenTiles := false;
-  end;
   AnimateBaseNotChanged;
-
 end;
 
 
