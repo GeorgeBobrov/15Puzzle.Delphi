@@ -329,7 +329,7 @@ begin
 	Tiles[OldPosition] := temp;
 
   Tiles[NewPosition].Tag := NewPosition;
-	AnimateMoveTile( Tiles[NewPosition], MoveAniDuration );
+	AnimateMoveTile(Tiles[NewPosition], MoveAniDuration);
 end;
 
 begin
@@ -344,14 +344,14 @@ begin
       if (RowNoTile > RowPressed) then // Move tiles down
         for RowToMove := RowNoTile - 1 downto RowPressed do
         begin
-          MoveTile(ind( RowToMove, ColPressed ), ind( RowToMove + 1, ColPressed ));
+          MoveTile(ind(RowToMove, ColPressed), ind(RowToMove + 1, ColPressed));
           WasMoved := true;
         end;
 
       if (RowPressed > RowNoTile) then // Move tiles up
         for RowToMove := RowNoTile + 1 to RowPressed do
         begin
-          MoveTile(ind( RowToMove, ColPressed ), ind( RowToMove - 1, ColPressed ));
+          MoveTile(ind(RowToMove, ColPressed), ind(RowToMove - 1, ColPressed));
           WasMoved := true;
         end;
 
@@ -366,14 +366,14 @@ begin
       if (ColNoTile > ColPressed) then // Move tiles right
         for ColToMove := ColNoTile - 1 downto ColPressed do
         begin
-          MoveTile(ind( RowPressed, ColToMove ), ind( RowPressed, ColToMove + 1 ));
+          MoveTile(ind(RowPressed, ColToMove), ind(RowPressed, ColToMove + 1));
           WasMoved := true;
         end;
 
       if (ColPressed > ColNoTile) then // Move tiles left
         for ColToMove := ColNoTile + 1 to ColPressed do
         begin
-          MoveTile(ind( RowPressed, ColToMove ), ind( RowPressed, ColToMove - 1 ));
+          MoveTile(ind(RowPressed, ColToMove), ind(RowPressed, ColToMove - 1));
           WasMoved := true;
         end;
 
@@ -669,6 +669,7 @@ end;
 
 procedure TForm15Puzzle.AnimatePlaceTilesSlow;
 var
+  Tile: TRectangle;
   i, X, Y : Integer;
   Row, Col: Word;
   ScaleX, ScaleY: Extended;
@@ -678,19 +679,20 @@ begin
   for i := 0 to Length(Tiles) - 1 do
     if (Tiles[i] <> nil) then
     begin
-      ScaleX := TileSize / Tiles[i].Width;
-      ScaleY := TileSize / Tiles[i].Height;
-      TAnimator.AnimateFloatDelay(Tiles[i], 'Scale.X', ScaleX, 0.5, 0.9 + 0.1 * i);
-      TAnimator.AnimateFloatDelay(Tiles[i], 'Scale.Y', ScaleY, 0.5, 0.8 + 0.1 * i);
+      Tile := Tiles[i];
+      ScaleX := TileSize / Tile.Width;
+      ScaleY := TileSize / Tile.Height;
+      TAnimator.AnimateFloatDelay(Tile, 'Scale.X', ScaleX, 0.5, 0.9 + 0.1 * i);
+      TAnimator.AnimateFloatDelay(Tile, 'Scale.Y', ScaleY, 0.5, 0.8 + 0.1 * i);
 
       DivMod(i, Base, Row, Col);
 
-      X := SpaceX + Round(Col * (Tiles[i].Width * ScaleX + TileSpacing));
-      Y := SpaceY + Round(Row * (Tiles[i].Height * ScaleY + TileSpacing));
+      X := SpaceX + Round(Col * (Tile.Width * ScaleX + TileSpacing));
+      Y := SpaceY + Round(Row * (Tile.Height * ScaleY + TileSpacing));
 
-      Tiles[i].Tag := i;
-      TAnimator.AnimateFloatDelay(Tiles[i], 'Position.X', X, 0.4, 0.5 + 0.1 * i);
-      TAnimator.AnimateFloatDelay(Tiles[i], 'Position.Y', Y, 0.3, 0.5 + 0.1 * i);
+      Tile.Tag := i;
+      TAnimator.AnimateFloatDelay(Tile, 'Position.X', X, 0.4, 0.5 + 0.1 * i);
+      TAnimator.AnimateFloatDelay(Tile, 'Position.Y', Y, 0.3, 0.5 + 0.1 * i);
     end;
 
 end;
@@ -700,6 +702,7 @@ end;
 
 procedure TForm15Puzzle.AnimatePlaceTilesFast;
 var
+  Tile: TRectangle;
   i, X, Y: Integer;
   Row, Col: Word;
   ScaleX, ScaleY: Extended;
@@ -709,19 +712,20 @@ begin
   for i := 0 to Length(Tiles) - 1 do
     if (Tiles[i] <> nil) then
     begin
-      ScaleX := TileSize / Tiles[i].Width;
-      ScaleY := TileSize / Tiles[i].Height;
-      TAnimator.AnimateFloatDelay(Tiles[i], 'Scale.X', ScaleX, 0.2 * slowdown, (0.2 + 0.03 * i) * slowdown);
-      TAnimator.AnimateFloatDelay(Tiles[i], 'Scale.Y', ScaleY, 0.2 * slowdown, (0.1 + 0.03 * i) * slowdown);
+      Tile := Tiles[i];
+      ScaleX := TileSize / Tile.Width;
+      ScaleY := TileSize / Tile.Height;
+      TAnimator.AnimateFloatDelay(Tile, 'Scale.X', ScaleX, 0.2 * slowdown, (0.2 + 0.03 * i) * slowdown);
+      TAnimator.AnimateFloatDelay(Tile, 'Scale.Y', ScaleY, 0.2 * slowdown, (0.1 + 0.03 * i) * slowdown);
 
       DivMod(i, Base, Row, Col);
 
-      X := SpaceX + Round(Col * (Tiles[i].Width * ScaleX + TileSpacing));
-      Y := SpaceY + Round(Row * (Tiles[i].Height * ScaleY + TileSpacing));
+      X := SpaceX + Round(Col * (Tile.Width * ScaleX + TileSpacing));
+      Y := SpaceY + Round(Row * (Tile.Height * ScaleY + TileSpacing));
 
-      Tiles[i].Tag := i;
-      TAnimator.AnimateFloatDelay(Tiles[i], 'Position.X', X, 0.2 * slowdown, (0 + 0.03 * i) * slowdown);
-      TAnimator.AnimateFloatDelay(Tiles[i], 'Position.Y', Y, 0.1 * slowdown, (0 + 0.03 * i) * slowdown);
+      Tile.Tag := i;
+      TAnimator.AnimateFloatDelay(Tile, 'Position.X', X, 0.2 * slowdown, (0 + 0.03 * i) * slowdown);
+      TAnimator.AnimateFloatDelay(Tile, 'Position.Y', Y, 0.1 * slowdown, (0 + 0.03 * i) * slowdown);
       {, TAnimationType.atIn, TInterpolationType.Back}
     end;
 end;
@@ -746,61 +750,66 @@ end;
 
 procedure TForm15Puzzle.AnimateBaseNotChanged1;
 var
-  i : Integer;
+  Tile: TRectangle;
+  i: Integer;
 begin
   for i := 0 to Length(Tiles) - 1 do
     if (Tiles[i] <> nil) then
     begin
-      TAnimator.AnimateFloatDelay(Tiles[i], 'RotationAngle', -20, 0.1 * slowdown, 0 * slowdown,
-        TAnimationType.InOut, TInterpolationType.Linear  );
+      Tile := Tiles[i];
+      TAnimator.AnimateFloatDelay(Tile, 'RotationAngle', -20, 0.1 * slowdown, 0 * slowdown,
+        TAnimationType.InOut, TInterpolationType.Linear);
 
-      TAnimator.AnimateFloatDelay(Tiles[i], 'RotationAngle', 20, 0.25 * slowdown, 0.1 * slowdown,
-        TAnimationType.InOut, TInterpolationType.Exponential  );
+      TAnimator.AnimateFloatDelay(Tile, 'RotationAngle', 20, 0.25 * slowdown, 0.1 * slowdown,
+        TAnimationType.InOut, TInterpolationType.Exponential);
 
-      TAnimator.AnimateFloatDelay(Tiles[i], 'RotationAngle', 0, 0.25 * slowdown, 0.35 * slowdown,
-        TAnimationType.Out, TInterpolationType.Back  );
+      TAnimator.AnimateFloatDelay(Tile, 'RotationAngle', 0, 0.25 * slowdown, 0.35 * slowdown,
+        TAnimationType.Out, TInterpolationType.Back);
     end;
 end;
 
 
 procedure TForm15Puzzle.AnimateBaseNotChanged2;
 var
+  Tile: TRectangle;
   i, X, Y: Integer;
   Row, Col: Word;
   OrigScaleX, OrigScaleY: Extended;
   Offset: Extended;
   OrigPosition: TPosition;
 begin
+  i := 0;
   for i := 0 to Length(Tiles) - 1 do
     if (Tiles[i] <> nil) then
     begin
-      OrigPosition := Tiles[i].Position;
-      OrigScaleX := Tiles[i].Scale.X;
-      OrigScaleY := Tiles[i].Scale.Y;
+      Tile := Tiles[i];
+      OrigPosition := Tile.Position;
+      OrigScaleX := Tile.Scale.X;
+      OrigScaleY := Tile.Scale.Y;
 
       DivMod(i, Base, Row, Col);
 
-      Offset := (Tiles[i].Width * Tiles[i].Scale.X) / 4 ;
+      Offset := (Tile.Width * Tile.Scale.X) / 4 ;
 
       X := Round(OrigPosition.X + Offset);
       Y := Round(OrigPosition.Y + Offset);
 
-      TAnimator.AnimateFloatDelay(Tiles[i], 'Scale.X', OrigScaleX / 2, 0.3 * slowdown,
+      TAnimator.AnimateFloatDelay(Tile, 'Scale.X', OrigScaleX / 2, 0.3 * slowdown,
         (0 + 0.03 * i) * slowdown, TAnimationType.In, TInterpolationType.Back);
-      TAnimator.AnimateFloatDelay(Tiles[i], 'Scale.Y', OrigScaleY / 2, 0.3 * slowdown,
+      TAnimator.AnimateFloatDelay(Tile, 'Scale.Y', OrigScaleY / 2, 0.3 * slowdown,
         (0 + 0.03 * i) * slowdown, TAnimationType.In, TInterpolationType.Back);
-      TAnimator.AnimateFloatDelay(Tiles[i], 'Position.X', X, 0.3 * slowdown,
+      TAnimator.AnimateFloatDelay(Tile, 'Position.X', X, 0.3 * slowdown,
         (0 + 0.03 * i) * slowdown, TAnimationType.In, TInterpolationType.Back);
-      TAnimator.AnimateFloatDelay(Tiles[i], 'Position.Y', Y, 0.3 * slowdown,
+      TAnimator.AnimateFloatDelay(Tile, 'Position.Y', Y, 0.3 * slowdown,
         (0 + 0.03 * i) * slowdown, TAnimationType.In, TInterpolationType.Back);
 
-      TAnimator.AnimateFloatDelay(Tiles[i], 'Scale.X', OrigScaleX, 0.3 * slowdown,
+      TAnimator.AnimateFloatDelay(Tile, 'Scale.X', OrigScaleX, 0.3 * slowdown,
         (0.35 + 0.03 * i) * slowdown, TAnimationType.Out, TInterpolationType.Back);
-      TAnimator.AnimateFloatDelay(Tiles[i], 'Scale.Y', OrigScaleY, 0.3 * slowdown,
+      TAnimator.AnimateFloatDelay(Tile, 'Scale.Y', OrigScaleY, 0.3 * slowdown,
         (0.35 + 0.03 * i) * slowdown, TAnimationType.Out, TInterpolationType.Back);
-      TAnimator.AnimateFloatDelay(Tiles[i], 'Position.X', OrigPosition.X, 0.3 * slowdown,
+      TAnimator.AnimateFloatDelay(Tile, 'Position.X', OrigPosition.X, 0.3 * slowdown,
         (0.35 + 0.03 * i) * slowdown, TAnimationType.Out, TInterpolationType.Back);
-      TAnimator.AnimateFloatDelay(Tiles[i], 'Position.Y', OrigPosition.Y, 0.3 * slowdown,
+      TAnimator.AnimateFloatDelay(Tile, 'Position.Y', OrigPosition.Y, 0.3 * slowdown,
         (0.35 + 0.03 * i) * slowdown, TAnimationType.Out, TInterpolationType.Back);
     end;
 end;
@@ -810,6 +819,7 @@ end;
 procedure TForm15Puzzle.AnimateTilesDisappeare;
 var
   i: Integer;
+  Tile: TRectangle;
   AniList: TList<TFloatAnimation>;
   SomeAniRunning: boolean;
   Animation: TFloatAnimation;
@@ -819,21 +829,22 @@ begin
   for i := 0 to Length(Tiles) - 1 do
     if (Tiles[i] <> nil) then
     begin
-      TAnimator.AnimateFloatDelay(Tiles[i], 'Scale.X', 0.1, 0.4 * slowdown, (0.03 * i) * slowdown);
-      TAnimator.AnimateFloatDelay(Tiles[i], 'Scale.Y', 0.1, 0.4 * slowdown, (0.03 * i) * slowdown);
+      Tile := Tiles[i];
+      TAnimator.AnimateFloatDelay(Tile, 'Scale.X', 0.1, 0.4 * slowdown, (0.03 * i) * slowdown);
+      TAnimator.AnimateFloatDelay(Tile, 'Scale.Y', 0.1, 0.4 * slowdown, (0.03 * i) * slowdown);
 
-      Animation := AnimateFloatDelayEx(Tiles[i], 'RotationAngle', 45,
+      Animation := AnimateFloatDelayEx(Tile, 'RotationAngle', 45,
         0.4 * slowdown, (0.03 * i) * slowdown,
         TAnimationType.In,  TInterpolationType.Linear, {DeleteWhenStopped} false);
 
       AniList.Add(Animation);
 
-      TAnimator.AnimateFloatDelay(Tiles[i], 'Position.Y', Tiles[i].Position.Y + TileSize,
+      TAnimator.AnimateFloatDelay(Tile, 'Position.Y', Tile.Position.Y + TileSize,
         0.4 * slowdown, (0.03 * i) * slowdown, TAnimationType.In, TInterpolationType.Back);
-      TAnimator.AnimateFloatDelay(Tiles[i], 'Position.X',
-        Tiles[i].Position.X + Round(TileSize / 2), 0.4 * slowdown, (0.03 * i) * slowdown);
+      TAnimator.AnimateFloatDelay(Tile, 'Position.X',
+        Tile.Position.X + Round(TileSize / 2), 0.4 * slowdown, (0.03 * i) * slowdown);
 
-      Animation := AnimateFloatDelayEx(Tiles[i], 'Opacity', 0,
+      Animation := AnimateFloatDelayEx(Tile, 'Opacity', 0,
         0.4 * slowdown, (0.1 + 0.03 * i) * slowdown,
         TAnimationType.In,  TInterpolationType.Linear, {DeleteWhenStopped} false);
 
@@ -867,6 +878,7 @@ end;
 
 procedure TForm15Puzzle.AnimatePrepareBeforePlace;
 var
+  Tile: TRectangle;
   i, X, Y: Integer;
   Row, Col: Word;
   ScaleX, ScaleY: Extended;
@@ -876,30 +888,32 @@ begin
   for i := 0 to Length(Tiles) - 1 do
     if (Tiles[i] <> nil) then
     begin
-      ScaleX := TileSize / Tiles[i].Width;
-      ScaleY := TileSize / Tiles[i].Height;
+      Tile := Tiles[i];
+      ScaleX := TileSize / Tile.Width;
+      ScaleY := TileSize / Tile.Height;
 
       DivMod(i, Base, Row, Col);
 
-      X := SpaceX + Round(Col * (Tiles[i].Width * ScaleX + TileSpacing));
-      Y := SpaceY + Round(Row * (Tiles[i].Height * ScaleY + TileSpacing));
+      X := SpaceX + Round(Col * (Tile.Width * ScaleX + TileSpacing));
+      Y := SpaceY + Round(Row * (Tile.Height * ScaleY + TileSpacing));
 
-      Tiles[i].Scale.X := 0.01;
-      Tiles[i].Scale.Y := 0.01;
-      Tiles[i].RotationAngle := 45;
-      Tiles[i].Opacity := 0;
-      Tiles[i].Position.X := X + Round(TileSize / 2);
-      Tiles[i].Position.Y := Y + TileSize;
+      Tile.Scale.X := 0.01;
+      Tile.Scale.Y := 0.01;
+      Tile.RotationAngle := 45;
+      Tile.Opacity := 0;
+      Tile.Position.X := X + Round(TileSize / 2);
+      Tile.Position.Y := Y + TileSize;
     end;
 
 
   for i := 0 to Length(Tiles) - 1 do
     if (Tiles[i] <> nil) then
     begin
-      Tiles[i].Position := Tile1.Position; //it is prettier
+      Tile := Tiles[i];
+      Tile.Position := Tile1.Position; //it is prettier
 
-      TAnimator.AnimateFloatDelay(Tiles[i], 'Opacity', 1, 0.4 * slowdown, (0.1 + 0.03 * i) * slowdown );
-      TAnimator.AnimateFloatDelay(Tiles[i], 'RotationAngle', 0, 0.4 * slowdown, (0.03 * i) * slowdown );
+      TAnimator.AnimateFloatDelay(Tile, 'Opacity', 1, 0.4 * slowdown, (0.1 + 0.03 * i) * slowdown);
+      TAnimator.AnimateFloatDelay(Tile, 'RotationAngle', 0, 0.4 * slowdown, (0.03 * i) * slowdown);
     end;
 
 end;
@@ -909,13 +923,14 @@ end;
 procedure TForm15Puzzle.AnimateTimeRunningOut;
 var
   i: Integer;
+  Tile: TRectangle;
   GradientAni: TGradientAnimation;
 begin
   for i := 0 to Length(Tiles) - 1 do
     if (Tiles[i] <> nil) then
     begin
-
-      GradientAni := (Tiles[i].Children[1] as TGradientAnimation);
+      Tile := Tiles[i];
+      GradientAni := (Tile.Children[1] as TGradientAnimation);
       GradientAni.StopValue.Color  := TAlphaColors.Darkorange;
       GradientAni.StopValue.Color1 := TileFillNormalColor1;
 
@@ -931,13 +946,15 @@ end;
 
 procedure TForm15Puzzle.AnimateTimeOver;
 var
-  i : Integer;
+  i: Integer;
+  Tile: TRectangle;
 var  GradientAni: TGradientAnimation ;
 begin
   for i := 0 to Length(Tiles) - 1 do
     if (Tiles[i] <> nil) then
     begin
-      GradientAni := Tiles[i].Children[1] as TGradientAnimation;
+      Tile := Tiles[i];
+      GradientAni := Tile.Children[1] as TGradientAnimation;
       GradientAni.Stop;
 
       GradientAni.StopValue.Color := TAlphaColors.Red;
@@ -956,13 +973,15 @@ end;
 
 procedure TForm15Puzzle.AnimateNormalizeTilesColor;
 var
-  i : Integer;
+  i: Integer;
+  Tile: TRectangle;
 var  GradientAni: TGradientAnimation ;
 begin
   for i := 0 to Length(Tiles) - 1 do
     if (Tiles[i] <> nil) then
     begin
-      GradientAni := Tiles[i].Children[1] as TGradientAnimation;
+      Tile := Tiles[i];
+      GradientAni := Tile.Children[1] as TGradientAnimation;
 
       GradientAni.StopValue.Color := TileFillNormalColor;
       GradientAni.StopValue.Color1 := TileFillNormalColor1;
@@ -978,25 +997,18 @@ end;
 
 procedure TForm15Puzzle.AnimatePuzzleMatched;
 var
+  Tile: TRectangle;
   i : Integer;
-//  Delay: Extended;
 var  GradientAni: TGradientAnimation ;
 begin
   for i := 0 to Length(Tiles) - 1 do
     if (Tiles[i] <> nil) then
     begin
+      Tile := Tiles[i];
+      TAnimator.AnimateFloatDelay(Tile, 'RotationAngle', 360, 1 * slowdown, 0.35 * slowdown,
+        TAnimationType.Out, TInterpolationType.Back);
 
-//      if (i = 0) then
-//        Delay := 0
-//      else
-//        Delay := {1.7388 *} Ln(i){ + 1.9267};
-//
-//      Delay := Ln(i+1);
-
-      TAnimator.AnimateFloatDelay(Tiles[i], 'RotationAngle', 360, 1 * slowdown, 0.35 * slowdown,
-        TAnimationType.Out, TInterpolationType.Back  );
-
-      GradientAni := Tiles[i].Children[1] as TGradientAnimation;
+      GradientAni := Tile.Children[1] as TGradientAnimation;
 
       GradientAni.Stop;
       GradientAni.StopValue.Color  := TAlphaColors.Gold;

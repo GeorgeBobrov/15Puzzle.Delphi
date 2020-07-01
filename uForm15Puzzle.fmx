@@ -27,7 +27,7 @@ object Form15Puzzle: TForm15Puzzle
       Fill.Gradient.Points = <
         item
           Color = xFFABE024
-          Offset = 0.086816720664501180
+          Offset = 0.086816720664501190
         end
         item
           Color = claBisque
@@ -63,7 +63,7 @@ object Form15Puzzle: TForm15Puzzle
         TextSettings.Font.Size = 15.000000000000000000
       end
       object TileGradientAni: TGradientAnimation
-        Duration = 0.400000005960464400
+        Duration = 0.400000005960464500
         PropertyName = 'Fill.Gradient'
         StartValue.Points = <
           item
@@ -171,7 +171,7 @@ object Form15Puzzle: TForm15Puzzle
           BaseSaturation = 0.500000000000000000
           object ShuffleGloomEffectAni: TFloatAnimation
             AutoReverse = True
-            Duration = 0.800000011920928900
+            Duration = 0.800000011920929000
             Loop = True
             PropertyName = 'BaseIntensity'
             StartValue = 1.000000000000000000
@@ -180,7 +180,7 @@ object Form15Puzzle: TForm15Puzzle
         end
         object ShuffleFillColorAni: TColorAnimation
           AutoReverse = True
-          Duration = 0.800000011920928900
+          Duration = 0.800000011920929000
           Loop = True
           PropertyName = 'Fill.Color'
           StartValue = claAliceblue
@@ -253,7 +253,7 @@ object Form15Puzzle: TForm15Puzzle
         BaseSaturation = 0.500000000000000000
         object ButtonMenuGloomAni: TFloatAnimation
           AutoReverse = True
-          Duration = 0.800000011920928900
+          Duration = 0.800000011920929000
           Loop = True
           PropertyName = 'BaseIntensity'
           StartValue = 1.000000000000000000
@@ -389,7 +389,7 @@ object Form15Puzzle: TForm15Puzzle
     end
     object PanelDebugAnimation: TFloatAnimation
       AnimationType = Out
-      Duration = 0.400000005960464400
+      Duration = 0.400000005960464500
       Interpolation = Back
       PropertyName = 'Height'
       StartValue = 0.000000000000000000
@@ -433,7 +433,7 @@ object Form15Puzzle: TForm15Puzzle
     YRadius = 3.000000000000000000
     object PanelMenuAnimation: TFloatAnimation
       AnimationType = Out
-      Duration = 0.400000005960464400
+      Duration = 0.400000005960464500
       Interpolation = Back
       Inverse = True
       PropertyName = 'Height'
