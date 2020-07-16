@@ -11,6 +11,10 @@
 
 ![alt-текст](https://github.com/GeorgeBobrov/Puzzle15.Delphi/blob/master/15Puzzle_Windows.png "Скриншот Windows-версии")
 
+  Скриншот Android-версии:
+
+![alt-текст](https://github.com/GeorgeBobrov/Puzzle15.Delphi/blob/master/15Puzzle_Android.png "Скриншот Android-версии")
+
 # Порт на QT
   Довольно давно у меня возникло желание портировать эту игрушку на JavaScript, заодно его и подучить. Однако так как JS ну совсем не похож на Delphi, у меня возникла идея портировать игру в два этапа – сначала на C++, а уже потом на JavaScript.
   
